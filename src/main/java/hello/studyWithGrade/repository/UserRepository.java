@@ -1,6 +1,6 @@
-package hello.studyWithChat.repository;
+package hello.studyWithGrade.repository;
 
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,7 +1,9 @@
-package hello.studyWithChat.entity.user;
+package hello.studyWithGrade.entity.user;
 
-import hello.studyWithChat.entity.Board;
-import hello.studyWithChat.entity.Comment;
+import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.Comment;
+import hello.studyWithGrade.entity.Study;
+import hello.studyWithGrade.entity.manytomany.StudyMember;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -13,7 +15,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
 
@@ -24,6 +26,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<StudyMember> studyMembers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -37,16 +42,12 @@ public class User {
         this.role = role;
     }
 
-    public void writeBoard(Board board) {
-        boards.add(board);
-    }
-
-    public void writeComment(Comment comment) {
-        comments.add(comment);
-    }
-
     public String getRoleKey() {
 
         return role.getKey();
+    }
+
+    public void joinStudy(Study study) {
+        studyMembers.add(new StudyMember(study, this));
     }
 }
