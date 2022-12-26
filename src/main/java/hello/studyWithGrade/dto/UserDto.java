@@ -1,6 +1,6 @@
-package hello.studyWithChat.dto;
+package hello.studyWithGrade.dto;
 
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import java.util.List;

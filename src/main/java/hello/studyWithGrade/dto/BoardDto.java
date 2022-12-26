@@ -1,8 +1,7 @@
-package hello.studyWithChat.dto;
+package hello.studyWithGrade.dto;
 
-import hello.studyWithChat.entity.Board;
-import hello.studyWithChat.entity.Comment;
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import java.util.List;
@@ -11,17 +10,21 @@ import java.util.stream.Collectors;
 @Getter
 public class BoardDto {
 
+    private Long id;
     private String title;
-    private String contents;
+    private String content;
     private User user;
+    private boolean progress;
     private List<CommentDto> commentDtos;
 
     public BoardDto(Board board) {
+        this.id = board.getId();
         this.title = board.getTitle();
-        this.contents = board.getContent();
+        this.content = board.getContent();
         this.user = board.getUser();
+        this.progress = board.isProgress();
         this.commentDtos = board.getComments().stream()
-                .map(comment -> new CommentDto(comment))
+                .map(CommentDto::new)
                 .collect(Collectors.toList());
     }
 }

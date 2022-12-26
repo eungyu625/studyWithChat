@@ -1,8 +1,6 @@
-package hello.studyWithChat.dto;
+package hello.studyWithGrade.dto;
 
-import hello.studyWithChat.entity.Board;
-import hello.studyWithChat.entity.Comment;
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
 
 @Getter
