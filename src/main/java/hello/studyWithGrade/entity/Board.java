@@ -1,10 +1,9 @@
-package hello.studyWithChat.entity;
+package hello.studyWithGrade.entity;
 
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,10 @@ public class Board {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
+
+    private boolean progress = false;
 
     protected Board() {
 
@@ -38,7 +39,7 @@ public class Board {
         this.user = user;
     }
 
-    public void addComments(Comment comment) {
-        comments.add(comment);
+    public void finish() {
+        progress = true;
     }
 }
