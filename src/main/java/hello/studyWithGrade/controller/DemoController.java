@@ -1,7 +1,7 @@
-package hello.studyWithChat.controller;
+package hello.studyWithGrade.controller;
 
-import hello.studyWithChat.config.auth.LoginUser;
-import hello.studyWithChat.config.auth.dto.SessionUser;
+import hello.studyWithGrade.config.auth.LoginUser;
+import hello.studyWithGrade.config.auth.dto.SessionUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

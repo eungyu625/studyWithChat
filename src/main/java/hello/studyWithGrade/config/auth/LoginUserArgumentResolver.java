@@ -1,6 +1,6 @@
-package hello.studyWithChat.config.auth;
+package hello.studyWithGrade.config.auth;
 
-import hello.studyWithChat.config.auth.dto.SessionUser;
+import hello.studyWithGrade.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

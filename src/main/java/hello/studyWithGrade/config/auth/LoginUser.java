@@ -1,4 +1,4 @@
-package hello.studyWithChat.config.auth;
+package hello.studyWithGrade.config.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

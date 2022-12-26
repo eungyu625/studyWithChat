@@ -1,7 +1,7 @@
-package hello.studyWithChat.config.auth.dto;
+package hello.studyWithGrade.config.auth.dto;
 
-import hello.studyWithChat.entity.user.User;
-import hello.studyWithChat.repository.UserRepository;
+import hello.studyWithGrade.entity.user.User;
+import hello.studyWithGrade.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

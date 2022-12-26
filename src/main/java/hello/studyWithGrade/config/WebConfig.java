@@ -1,9 +1,8 @@
-package hello.studyWithChat.config;
+package hello.studyWithGrade.config;
 
-import hello.studyWithChat.config.auth.LoginUserArgumentResolver;
+import hello.studyWithGrade.config.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

@@ -1,4 +1,4 @@
-package hello.studyWithChat.entity.user;
+package hello.studyWithGrade.entity.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package hello.studyWithChat.config.auth.dto;
+package hello.studyWithGrade.config.auth.dto;
 
-import hello.studyWithChat.entity.user.Role;
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.Role;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,9 +1,9 @@
-package hello.studyWithChat.config.auth;
+package hello.studyWithGrade.config.auth;
 
-import hello.studyWithChat.config.auth.dto.OAuthAttributes;
-import hello.studyWithChat.config.auth.dto.SessionUser;
-import hello.studyWithChat.entity.user.User;
-import hello.studyWithChat.repository.UserRepository;
+import hello.studyWithGrade.config.auth.dto.OAuthAttributes;
+import hello.studyWithGrade.config.auth.dto.SessionUser;
+import hello.studyWithGrade.entity.user.User;
+import hello.studyWithGrade.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

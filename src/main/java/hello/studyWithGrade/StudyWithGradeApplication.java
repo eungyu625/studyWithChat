@@ -1,13 +1,13 @@
-package hello.studyWithChat;
+package hello.studyWithGrade;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StudyWithChatApplication {
+public class StudyWithGradeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StudyWithChatApplication.class, args);
+		SpringApplication.run(StudyWithGradeApplication.class, args);
 	}
 
 }

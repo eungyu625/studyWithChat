@@ -1,6 +1,6 @@
-package hello.studyWithChat.config.auth.dto;
+package hello.studyWithGrade.config.auth.dto;
 
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import java.io.Serializable;

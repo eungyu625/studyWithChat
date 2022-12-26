@@ -1,4 +1,4 @@
-package hello.studyWithChat.config.auth;
+package hello.studyWithGrade.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
