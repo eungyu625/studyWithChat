@@ -1,8 +1,8 @@
-package hello.studyWithChat.repository;
+package hello.studyWithGrade.repository;
 
-import hello.studyWithChat.entity.Board;
-import hello.studyWithChat.entity.Comment;
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.Comment;
+import hello.studyWithGrade.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

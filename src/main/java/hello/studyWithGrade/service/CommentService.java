@@ -1,9 +1,9 @@
-package hello.studyWithChat.service;
+package hello.studyWithGrade.service;
 
-import hello.studyWithChat.entity.Board;
-import hello.studyWithChat.entity.Comment;
-import hello.studyWithChat.entity.user.User;
-import hello.studyWithChat.repository.CommentRepository;
+import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.Comment;
+import hello.studyWithGrade.entity.user.User;
+import hello.studyWithGrade.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +16,20 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserService userService;
+    private final BoardService boardService;
 
     public void write(Comment comment) {
-
         commentRepository.save(comment);
+    }
+
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
+    }
+
+    public Comment findById(Long id) {
+
+        return commentRepository.findById(id).orElse(null);
     }
 
     public List<Comment> findByUser(User user) {

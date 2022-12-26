@@ -1,6 +1,6 @@
-package hello.studyWithChat.entity;
+package hello.studyWithGrade.entity;
 
-import hello.studyWithChat.entity.user.User;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import javax.persistence.*;
