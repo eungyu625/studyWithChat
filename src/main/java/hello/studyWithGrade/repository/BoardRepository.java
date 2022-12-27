@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findByTitleLike(@Param("title") String title);
-    List<Board> findByUser(@Param("user") User user);
+    List<Board> findByTitleLike(String title);
+    List<Board> findByUser(User user);
 }
