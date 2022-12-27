@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final StudyMemberService studyMemberService;
 
     public void join(User user) {
         userRepository.save(user);
@@ -41,7 +42,7 @@ public class UserService {
     // 해당 스터디의 스터디원 정보 반환
     public List<User> findStudyMembersByStudy(Study study) {
 
-        return study.getStudyMembers().stream()
+        return studyMemberService.findByStudy(study).stream()
                 .map(StudyMember::getUser)
                 .collect(Collectors.toList());
     }

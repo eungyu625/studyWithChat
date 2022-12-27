@@ -17,9 +17,17 @@ import java.util.stream.Collectors;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final StudyMemberService studyMemberService;
 
     public void create(Study study) {
+        studyMemberService.save(new StudyMember(study, study.getUser()));
         studyRepository.save(study);
+    }
+
+    // 스터디장이 탈퇴할 경우에만 스터디 삭제
+    public void delete(Study study) {
+        studyMemberService.deleteStudy(studyMemberService.findByStudy(study));
+        studyRepository.delete(study);
     }
 
     public Study findById(Long id) {
@@ -30,13 +38,18 @@ public class StudyService {
     // 해당 유저의 스터디 정보 반환
     public List<Study> findByUser(User user) {
 
-        return user.getStudyMembers().stream()
+        return studyMemberService.findByUser(user).stream()
                 .map(StudyMember::getStudy)
                 .collect(Collectors.toList());
     }
 
+    // 스터디원 추가
+    public void addMember(Study study, User user) {
+        studyMemberService.save(new StudyMember(study, user));
+    }
+
     // 탈퇴한 스터디원 정보 삭제
     public void removeMember(User user) {
-
+        studyMemberService.deleteMember(studyMemberService.findByUser(user));
     }
 }
