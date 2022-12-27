@@ -29,11 +29,10 @@ public class Board {
 
     private boolean progress = false;
 
-    protected Board() {
-
-    }
-
-    public Board(String title, String content, User user) {
+    /*
+     * 생성 메소드
+     */
+    public void create(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;

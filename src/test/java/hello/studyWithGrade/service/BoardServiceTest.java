@@ -27,9 +27,11 @@ class BoardServiceTest {
     void findById(){
 
         // given
-        User user = new User("123", Role.USER);
+        User user = new User();
+        user.create("123", Role.USER);
         userService.join(user);
-        Board board = new Board("title", "content", user);
+        Board board = new Board();
+        board.create("title", "content", user);
         boardService.write(board);
 
         // when
@@ -43,10 +45,13 @@ class BoardServiceTest {
     void delete() {
 
         // given
-        User user = new User("123", Role.USER);
+        User user = new User();
+        user.create("123", Role.USER);
         userService.join(user);
-        Board board = new Board("title", "content", user);
-        Board board2 = new Board("title", "content", user);
+        Board board = new Board();
+        board.create("title", "content", user);
+        Board board2 = new Board();
+        board2.create("title", "content", user);
         boardService.write(board);
         boardService.write(board2);
 

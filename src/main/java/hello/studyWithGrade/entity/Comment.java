@@ -24,11 +24,10 @@ public class Comment {
 
     private String content;
 
-    protected Comment() {
-
-    }
-
-    public Comment(String content, Board board, User user) {
+    /*
+     * 생성 메소드
+     */
+    public void create(String content, Board board, User user) {
         this.content = content;
         this.board = board;
         this.user = user;

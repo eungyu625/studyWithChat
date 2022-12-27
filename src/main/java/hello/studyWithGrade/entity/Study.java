@@ -28,14 +28,12 @@ public class Study {
     @OneToMany(mappedBy = "study")
     private List<StudyMember> studyMembers = new ArrayList<>();
 
-    protected Study() {
-
-    }
-
-    public Study(String name, User user) {
+    /*
+     * 생성 메소드
+     */
+    public void create(String name, User user) {
         this.name = name;
         this.user = user;
-        this.studyMembers.add(new StudyMember(this, user));
     }
 
     public void finish() {

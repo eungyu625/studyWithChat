@@ -31,13 +31,16 @@ public class CommentServiceTest {
     void findById() {
 
         // given
-        User user = new User("123", Role.USER);
+        User user = new User();
+        user.create("123", Role.USER);
         userService.join(user);
 
-        Board board = new Board("abc", "abc", user);
+        Board board = new Board();
+        board.create("abc", "abc", user);
         boardService.write(board);
 
-        Comment comment = new Comment("aaaa", board, user);
+        Comment comment = new Comment();
+        comment.create("aaaa", board, user);
         commentService.write(comment);
 
         // when
@@ -51,13 +54,16 @@ public class CommentServiceTest {
     void findByBoard() {
 
         // given
-        User user = new User("123", Role.USER);
+        User user = new User();
+        user.create("123", Role.USER);
         userService.join(user);
 
-        Board board = new Board("abc", "abc", user);
+        Board board = new Board();
+        board.create("abc", "abc", user);
         boardService.write(board);
 
-        Comment comment = new Comment("aaaa", board, user);
+        Comment comment = new Comment();
+        comment.create("aaaa", board, user);
         commentService.write(comment);
 
         // when
@@ -73,13 +79,16 @@ public class CommentServiceTest {
     void delete() {
 
         // given
-        User user = new User("123", Role.USER);
+        User user = new User();
+        user.create("123", Role.USER);
         userService.join(user);
 
-        Board board = new Board("abc", "abc", user);
+        Board board = new Board();
+        board.create("abc", "abc", user);
         boardService.write(board);
 
-        Comment comment = new Comment("aaaa", board, user);
+        Comment comment = new Comment();
+        comment.create("aaaa", board, user);
         commentService.write(comment);
 
         assertThat(1).isEqualTo(commentService.findByBoard(board).size());

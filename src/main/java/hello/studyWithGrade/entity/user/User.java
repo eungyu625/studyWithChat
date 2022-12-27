@@ -33,11 +33,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    protected User() {
-
-    }
-
-    public User(String email, Role role) {
+    /*
+     * 생성 메소드
+     */
+    public void create(String email, Role role) {
         this.email = email;
         this.role = role;
     }
@@ -45,9 +44,5 @@ public class User {
     public String getRoleKey() {
 
         return role.getKey();
-    }
-
-    public void joinStudy(Study study) {
-        studyMembers.add(new StudyMember(study, this));
     }
 }
