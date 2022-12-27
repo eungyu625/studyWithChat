@@ -19,10 +19,16 @@ public class UserServiceTest {
 
     @Test
     void findById() {
-        User user = new User("abc@naver.com", Role.USER);
+
+        // given
+        User user = new User();
+        user.create("abc@naver.com", Role.USER);
         userService.join(user);
+
+        // when
         User findUser = userService.findById(user.getId());
 
+        // then
         assertThat(findUser).isEqualTo(user);
     }
 }
