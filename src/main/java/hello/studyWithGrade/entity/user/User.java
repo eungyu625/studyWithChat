@@ -33,12 +33,26 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Double grade = 0.;
+
+    private Integer studies_ended = 0;
+
+    private Integer studies_ing = 0;
+
     /*
      * 생성 메소드
      */
     public void create(String email, Role role) {
         this.email = email;
         this.role = role;
+    }
+
+    public void start_study() {
+        studies_ing += 1;
+    }
+
+    public void end_study() {
+        studies_ended += 1;
     }
 
     public String getRoleKey() {
