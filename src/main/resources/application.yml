@@ -13,6 +13,10 @@ spring:
   profiles:
     include: oauth
 
+  session:
+    jdbc:
+      initialize-schema: always
+
 server:
   servlet:
     session:
