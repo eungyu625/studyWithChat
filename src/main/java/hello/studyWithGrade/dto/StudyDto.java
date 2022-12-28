@@ -1,6 +1,7 @@
 package hello.studyWithGrade.dto;
 
 import hello.studyWithGrade.entity.Study;
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import java.util.List;
@@ -9,15 +10,15 @@ import java.util.stream.Collectors;
 @Getter
 public class StudyDto {
 
+    private Long id;
     private String name;
     private boolean progress;
-    private List<UserDto> members;
+    private List<UserDto> userDtos;
 
-    public StudyDto(Study study) {
+    public StudyDto(Study study, List<User> users) {
+        this.id = study.getId();
         this.name = study.getName();
         this.progress = study.isProgress();
-        members = study.getStudyMembers().stream()
-                .map(studyMember -> new UserDto(studyMember.getUser()))
-                .collect(Collectors.toList());
+        this.userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
     }
 }

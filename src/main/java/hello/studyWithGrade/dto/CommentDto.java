@@ -6,13 +6,17 @@ import lombok.Getter;
 @Getter
 public class CommentDto {
 
-    private String contents;
-    private BoardDto boardDto;
+    private Long id;
+    private String content;
     private UserDto userDto;
 
+    protected CommentDto() {
+
+    }
+
     public CommentDto(Comment comment) {
-        this.contents = comment.getContent();
-        this.boardDto = new BoardDto(comment.getBoard());
+        this.id = comment.getId();
+        this.content = comment.getContent();
         this.userDto = new UserDto(comment.getUser());
     }
 }

@@ -1,7 +1,7 @@
 package hello.studyWithGrade.dto;
 
 import hello.studyWithGrade.entity.Board;
-import hello.studyWithGrade.entity.user.User;
+import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
 
 import java.util.List;
@@ -13,18 +13,18 @@ public class BoardDto {
     private Long id;
     private String title;
     private String content;
-    private User user;
-    private boolean progress;
+    private UserDto userDto;
     private List<CommentDto> commentDtos;
 
-    public BoardDto(Board board) {
+    protected BoardDto() {
+
+    }
+
+    public BoardDto(Board board, List<Comment> comments) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.user = board.getUser();
-        this.progress = board.isProgress();
-        this.commentDtos = board.getComments().stream()
-                .map(CommentDto::new)
-                .collect(Collectors.toList());
+        this.userDto = new UserDto(board.getUser());
+        this.commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
     }
 }
