@@ -4,6 +4,7 @@ import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,8 @@ public class BoardDto {
     private Long id;
     private String title;
     private String content;
+    private boolean progress;
+    private LocalDateTime writeTime;
     private UserDto userDto;
     private List<CommentDto> commentDtos;
 
@@ -24,6 +27,8 @@ public class BoardDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
+        this.progress = board.isProgress();
+        this.writeTime = board.getWriteTime();
         this.userDto = new UserDto(board.getUser());
         this.commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
     }
