@@ -19,6 +19,9 @@ public class BoardService {
     private final UserService userService;
 
     public void write(Board board) {
+
+        User user = board.getUser();
+        user.updateRecentBoardWriteTime(); // 사용자가 가장 최근에 글을 작성한 시간 갱신 -> 10분 시간 제한을 두기 위해 필요
         boardRepository.save(board);
     }
 
