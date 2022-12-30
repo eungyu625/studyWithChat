@@ -7,6 +7,7 @@ import hello.studyWithGrade.entity.manytomany.StudyMember;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,18 @@ public class User {
 
     private Integer studies_ing = 0;
 
+    private LocalDateTime recentBoardWriteTime;
+
     /*
      * 생성 메소드
      */
     public void create(String email, Role role) {
         this.email = email;
         this.role = role;
+    }
+
+    public void updateRecentBoardWriteTime() {
+        this.recentBoardWriteTime = LocalDateTime.now();
     }
 
     public void start_study() {
