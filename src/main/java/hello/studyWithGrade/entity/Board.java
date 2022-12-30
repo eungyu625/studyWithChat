@@ -4,6 +4,7 @@ import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class Board {
 
     private boolean progress = false;
 
+    private LocalDateTime writeTime;
+
     /*
      * 생성 메소드
      */
@@ -36,6 +39,7 @@ public class Board {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.writeTime = LocalDateTime.now();
     }
 
     public void finish() {
