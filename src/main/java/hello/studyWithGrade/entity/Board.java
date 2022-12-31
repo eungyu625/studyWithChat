@@ -32,14 +32,18 @@ public class Board {
 
     private LocalDateTime writeTime;
 
+    @ElementCollection
+    private List<String> keyword;
+
     /*
      * 생성 메소드
      */
-    public void create(String title, String content, User user) {
+    public void create(String title, String content, User user, List<String> keyword) {
         this.title = title;
         this.content = content;
         this.user = user;
         this.writeTime = LocalDateTime.now();
+        this.keyword = keyword.stream().toList();
     }
 
     public void finish() {
