@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @GetMapping("/test")
-    public SessionUser demo(@LoginUser SessionUser user) {
+    public String demo(@LoginUser SessionUser user) {
 
-        return user;
+        return "hello";
     }
 }

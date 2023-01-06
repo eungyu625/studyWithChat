@@ -1,5 +1,8 @@
 package hello.studyWithGrade.config.auth;
 
+import hello.studyWithGrade.config.jwt.JwtAuthFilter;
+import hello.studyWithGrade.config.jwt.TokenService;
+import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -17,33 +22,26 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuthSuccessHandler oAuthSuccessHandler;
+    private final TokenService tokenService;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors().disable()
+        http.httpBasic().disable()
                 .csrf().disable()
-                .headers().frameOptions().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/join", "/css/**", "/js/**", "/img/**").permitAll()
+                .antMatchers("/", "/img/**", "/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
                 .oauth2Login()
-                .successHandler(new UserLoginSuccessHandler())
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .successHandler(oAuthSuccessHandler)
+                .userInfoEndpoint().userService(customOAuth2UserService);
 
+        http.addFilterBefore(new JwtAuthFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
-        return authenticationConfiguration.getAuthenticationManager();
     }
 }

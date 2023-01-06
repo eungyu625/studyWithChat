@@ -13,6 +13,10 @@ public class MainDto {
     private LocalDateTime writeTime;
     private Integer commentNumber;
 
+    protected MainDto() {
+
+    }
+
     public MainDto(Long id, String title, String username, LocalDateTime writeTime, Integer commentNumber) {
         this.id = id;
         this.title = title;

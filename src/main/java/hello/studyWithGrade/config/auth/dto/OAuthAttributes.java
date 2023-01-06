@@ -2,46 +2,53 @@ package hello.studyWithGrade.config.auth.dto;
 
 import hello.studyWithGrade.entity.user.Role;
 import hello.studyWithGrade.entity.user.User;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.Map;
 
+@ToString
+@Builder
 @Getter
 public class OAuthAttributes {
     private Map<String, Object> attributes;
-    private String nameAttributeKey;
-    private String name;
+    private String attributeKey;
     private String email;
+    private String name;
+    private String picture;
 
-    @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email) {
-        this.attributes = attributes;
-        this.nameAttributeKey = nameAttributeKey;
-        this.name = name;
-        this.email = email;
+    public static OAuthAttributes of(String provider, String attributeKey,
+                              Map<String, Object> attributes) {
+        switch (provider) {
+            case "google":
+                return ofGoogle(attributeKey, attributes);
+            default:
+                throw new RuntimeException();
+        }
     }
 
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-
-        return ofGoogle(userNameAttributeName, attributes);
-    }
-
-    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofGoogle(String attributeKey,
+                                            Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
+                .picture((String)attributes.get("picture"))
                 .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
+                .attributeKey(attributeKey)
                 .build();
     }
 
+    public Map<String, Object> convertToMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", attributeKey);
+        map.put("key", attributeKey);
+        map.put("name", name);
+        map.put("email", email);
+        map.put("picture", picture);
 
-    public User toEntity() {
-
-        User user = new User();
-        user.create(email, Role.USER);
-
-        return user;
+        return map;
     }
 }

@@ -15,6 +15,10 @@ public class StudyDto {
     private boolean progress;
     private List<UserDto> userDtos;
 
+    protected StudyDto() {
+
+    }
+
     public StudyDto(Study study, List<User> users) {
         this.id = study.getId();
         this.name = study.getName();
