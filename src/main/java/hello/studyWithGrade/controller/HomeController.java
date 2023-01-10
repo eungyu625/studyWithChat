@@ -8,6 +8,8 @@ import hello.studyWithGrade.service.CommentService;
 import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class HomeController {
 
@@ -27,28 +29,17 @@ public class HomeController {
     private final CommentService commentService;
 
     @GetMapping("/")
-    public ResponseEntity<List<MainDto>> home(@RequestParam(value = "title", required = false) String title) {
+    public String home(Model model) {
+
         List<MainDto> mainDtos = new ArrayList<>();
-        if (title == null || title.length() == 0) {
-            for (Board board : boardService.findAll()) {
-                Long id = board.getId();
-                String boardTitle = board.getTitle();
-                String username = board.getUser().getEmail();
-                LocalDateTime writeTime = board.getWriteTime();
-                Integer commentNumber = commentService.findByBoard(board).size();
-                mainDtos.add(new MainDto(id, boardTitle, username, writeTime, commentNumber));
-            }
-        } else {
-            for (Board board : boardService.findByTitleLike(title)) {
-                Long id = board.getId();
-                String boardTitle = board.getTitle();
-                String username = board.getUser().getEmail();
-                LocalDateTime writeTime = board.getWriteTime();
-                Integer commentNumber = commentService.findByBoard(board).size();
-                mainDtos.add(new MainDto(id, boardTitle, username, writeTime, commentNumber));
-            }
+
+        for (Board board : boardService.findAll()) {
+            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser().getEmail(), board.getWriteTime(),
+                    commentService.findByBoard(board).size()));
         }
 
-        return ResponseEntity.ok(mainDtos);
+        model.addAttribute("mainDtoList", mainDtos);
+
+        return "home";
     }
 }
