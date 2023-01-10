@@ -24,15 +24,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="board : ${boardDtoList}">
-                    <td th:text="${board.user.email}"></td>
-                    <td th:text="${board.title}" th:onclick="findBoard(board.id)"></td>
+                <tr th:each="main : ${mainDtoList}">
+                    <td th:text="${main.username}"></td>
+                    <td th:text="${main.title}" th:onclick="findBoard(main.id)"></td>
                     <script th:inline="javascript">
                         function findBoard(variable) {
                             location.href = '/';
                         }
                     </script>
-                    <td th:text="board."
+                    <td th:text="main.commentNumber"></td>
                 </tr>
                 </tbody>
             </table>
