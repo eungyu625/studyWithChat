@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="header" th:fragment="bodyHeader">
+  <ul class="nav nav-pills pull-right">
+    <li><a href="/">HOME</a></li>
+  </ul>
+  <a href="/"><h3 class="text-muted">STUDYwithGRADE</h3></a>
+  <div class=" row px-1" style="text-align : right; height: 120px">
+    <div sec:authorize="isAnonymous()" style="display: inline-block">
+      <button class="btn btn-outline-dark" onclick="location.href='/oauth2/authorization/google'">로그인</button>
+      <button class="btn btn-outline-dark" onclick="location.href='/oauth2/authorization/google'">회원가입</button>
+    </div>
+    <div sec:authorize="isAuthenticated()" style="display: inline-block">
+      <button class="btn btn-outline-dark" onclick="location.href='/myInfo/board'">내 정보</button>
+      <button class="btn btn-outline-dark" onclick="location.href='/logout'">로그아웃</button>
+    </div>
+  </div>
+</div>

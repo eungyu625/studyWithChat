@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-securyt">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: header"/>
 <body>
 <div class="container">
-    <div class=" row px-3" style="text-align : right; height: 120px">
-        <div style="display: inline-block">
-            <button class="btn btn-outline-dark">로그인</button>
-            <button class="btn btn-outline-dark">회원가입</button>
-        <hr />
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th style="width : 20%">작성자</th>
+                <!-- 댓글 목록 확인 시에는 댓글 내용이 제목 대신 -->
+                <th style="width : 40%">제목</th>
+                <th style="width : 20%">작성일자</th>
+                <!-- 댓글 목록 확인 시에는 삭제되는 요소 -->
+                <th>댓글(갯수)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="main : ${mainDtoList}">
+                <td th:text="${main.username}"></td>
+                <td th:text="${main.title}" th:onclick="findBoard(main.id)"></td>
+                <script th:inline="javascript">
+                    function findBoard(variable) {
+                        location.href = '/';
+                    }
+                </script>
+                <td th:text="main.commentNumber"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="container">
-        <div>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th style="width : 20%">작성자</th>
-                    <!-- 댓글 목록 확인 시에는 댓글 내용이 제목 대신 -->
-                    <th style="width : 40%">제목</th>
-                    <th style="width : 20%">작성일자</th>
-                    <!-- 댓글 목록 확인 시에는 삭제되는 요소 -->
-                    <th>댓글(갯수)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="main : ${mainDtoList}">
-                    <td th:text="${main.username}"></td>
-                    <td th:text="${main.title}" th:onclick="findBoard(main.id)"></td>
-                    <script th:inline="javascript">
-                        function findBoard(variable) {
-                            location.href = '/';
-                        }
-                    </script>
-                    <td th:text="main.commentNumber"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 </div>
 </body>
 </html>
