@@ -13,6 +13,6 @@ public class UserRequestMapper {
 
     public SessionUser toDto(OAuth2User oAuth2User) {
         var attributes = oAuth2User.getAttributes();
-        return new SessionUser(userService.findByEmail((String)attributes.get("email")));
+        return null;
     }
 }
