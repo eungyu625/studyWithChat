@@ -13,9 +13,16 @@
 
     <form role="form" th:action th:object="${boardForm}" method="post">
 
+        <div class="form-group">
+            <label class="text-white" for="keyword">키워드</label>
+            <input type="text" class="form-control" id="key-word" th:field="*{keyword}" placeholder="해시태그"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{keyword}">제목 없음</div>
+        </div>
+
         <div class="form-group py-3">
             <label class="text-white" for="title">제목</label>
-            <input type="text" class="form-control" id="title"  th:field="*{title}" placeholder="제목"
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{title}">제목 없음</div>
         </div>
@@ -26,6 +33,20 @@
                       th:errorclass="field-error"></textarea>
             <div class="field-error" th:errors="*{content}">내용 없음</div>
         </div>
+
+        <script src="https://unpkg.com/@yaireo/tagify"></script>
+        <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+        <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+        <script>
+            var input = document.querySelector('input')
+            var tagify = new Tagify(input);
+
+            // 태그가 추가되면 이벤트 발생
+            tagify.on('add', function() {
+                console.log(tagify.value); // 입력된 태그 정보 객체
+            })
+        </script>
 
         <div class="row justify-content-center my-5 py-5">
             <div class="col-3">

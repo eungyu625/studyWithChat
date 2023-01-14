@@ -26,10 +26,16 @@
                         location.href = '/';
                     }
                 </script>
-                <td th:text="main.commentNumber"></td>
+                <td th:text="${main.writeTime}"></td>
+                <td th:text="${main.commentNumber}"></td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div style="text-align: center">
+        <input type="text" id="title" name="title"/>
+        <button style="display: inline-block" class="btn btn-secondary" type="submit">검색</button>
+        <button style="display: inline-block" class="btn btn-secondary" onclick="location.href='/board'">글 작성</button>
     </div>
 </div>
 </body>
