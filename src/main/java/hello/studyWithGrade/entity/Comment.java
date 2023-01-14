@@ -4,6 +4,7 @@ import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,6 +25,8 @@ public class Comment {
 
     private String content;
 
+    private LocalDateTime writeTime;
+
     /*
      * 생성 메소드
      */
@@ -31,5 +34,6 @@ public class Comment {
         this.content = content;
         this.board = board;
         this.user = user;
+        this.writeTime = LocalDateTime.now();
     }
 }
