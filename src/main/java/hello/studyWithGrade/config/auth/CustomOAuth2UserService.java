@@ -2,6 +2,7 @@ package hello.studyWithGrade.config.auth;
 
 import hello.studyWithGrade.config.auth.dto.OAuthAttributes;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
+import hello.studyWithGrade.entity.user.Role;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
 
-        return userRepository.findByEmail(attributes.getEmail()).orElse(attributes.toEntity());
+        User user = userRepository.findByEmail(attributes.getEmail()).orElse(attributes.toEntity());
+
+        return userRepository.save(user);
     }
 }
