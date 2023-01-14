@@ -13,6 +13,7 @@ import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +42,25 @@ public class BoardController {
     @PostMapping("/board")
     public String write(@Validated @ModelAttribute BoardForm boardForm, BindingResult result, @LoginUser SessionUser sessionUser) {
 
+        if (!StringUtils.hasText(boardForm.getTitle())) {
+            result.rejectValue("title", "required", null, null);
+        }
+
+        if (!StringUtils.hasText(boardForm.getContent())) {
+            result.rejectValue("content", "required", null, null);
+        }
+
+        if (boardForm.getKeyword().size() == 0) {
+            result.rejectValue("keyword", "required", null, null);
+        }
+
+        if (result.hasErrors()) {
+            return "boards/boardForm";
+        }
+
+        System.out.println(boardForm.getKeyword());
+
         User user = userService.findByEmail(sessionUser.getEmail());
-        System.out.println(user);
         Board board = new Board();
         board.create(boardForm.getTitle(), boardForm.getContent(), user, List.of("new"));
         boardService.write(board);
@@ -57,6 +75,6 @@ public class BoardController {
         List<Comment> comments = commentService.findByBoard(board);
         model.addAttribute("boardDto", new BoardDto(board, comments));
 
-        return null;
+        return "boards/board";
     }
 }
