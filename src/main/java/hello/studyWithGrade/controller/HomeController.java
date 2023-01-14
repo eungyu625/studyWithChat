@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,5 +42,20 @@ public class HomeController {
         model.addAttribute("mainDtoList", mainDtos);
 
         return "home";
+    }
+
+    @PostMapping("/")
+    public String searchByTitle(@RequestParam String title, Model model) {
+
+        List<MainDto> mainDtos = new ArrayList<>();
+
+        for (Board board : boardService.findByTitleLike(title)) {
+            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser().getEmail(), board.getWriteTime(),
+                    commentService.findByBoard(board).size()));
+        }
+
+        model.addAttribute("mainDtoList", mainDtos);
+
+        return "redirect:/";
     }
 }
