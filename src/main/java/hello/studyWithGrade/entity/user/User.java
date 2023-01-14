@@ -46,7 +46,7 @@ public class User {
      * 생성 메소드
      */
     public void create(String email, Role role) {
-        this.email = email;
+        this.email = email.split("@")[0];
         this.role = role;
     }
 
