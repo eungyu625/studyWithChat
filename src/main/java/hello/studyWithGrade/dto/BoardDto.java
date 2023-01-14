@@ -5,6 +5,7 @@ import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,9 +16,10 @@ public class BoardDto {
     private String title;
     private String content;
     private boolean progress;
-    private LocalDateTime writeTime;
+    private String writeTime;
     private UserDto userDto;
     private List<CommentDto> commentDtos;
+    private Integer commentNumbers;
 
     protected BoardDto() {
 
@@ -28,8 +30,9 @@ public class BoardDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.progress = board.isProgress();
-        this.writeTime = board.getWriteTime();
+        this.writeTime = DateTimeFormatter.ofPattern("MM-DD HH:mm").format(board.getWriteTime());
         this.userDto = new UserDto(board.getUser());
         this.commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
+        this.commentNumbers = commentDtos.size();
     }
 }

@@ -3,11 +3,14 @@ package hello.studyWithGrade.dto;
 import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 public class CommentDto {
 
     private Long id;
     private String content;
+    private String writeTime;
     private UserDto userDto;
 
     protected CommentDto() {
@@ -17,6 +20,7 @@ public class CommentDto {
     public CommentDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
+        this.writeTime = DateTimeFormatter.ofPattern("HH:mm").format(comment.getWriteTime());
         this.userDto = new UserDto(comment.getUser());
     }
 }
