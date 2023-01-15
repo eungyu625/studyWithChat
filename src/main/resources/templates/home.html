@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"/>
 <body>
 <div class="container">
@@ -18,12 +17,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="main : ${mainDtoList}">
-                <td th:text="${main.username}"></td>
-                <td th:text="${main.title}" th:onclick="findBoard(main.id)"></td>
-                <script th:inline="javascript">
-                    function findBoard(variable) {
-                        location.href = '/';
+            <tr th:each="main : ${mainDtos}">
+                <td th:text="${main.userDto?.email}" th:onclick="|javascript:userInformation(${main.userDto?.id})|"></td>
+                <script type="text/javascript">
+                    function userInformation(id) {
+                        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+                    }
+                </script>
+                <td th:text="${main.title}" th:onclick="|javascript:findBoard(${main.id})|"></td>
+                <script type="text/javascript">
+                    function findBoard(id) {
+                        location.href='/board/' + id;
                     }
                 </script>
                 <td th:text="${main.writeTime}"></td>

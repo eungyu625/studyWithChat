@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div>
+        <div>
+            이메일 : <span th:text="${userDto.email}"></span>
+        </div>
+        <div>
+            평점 : <span th:text="${userDto.grade}"></span>
+        </div>
+        <div>
+            완료한 스터디 : <span th:text="${userDto.studies_ended}"></span>
+        </div>
+        <div>
+            진행중인 스터디 : <span th:text="${userDto.studies_ing}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

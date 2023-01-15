@@ -19,16 +19,17 @@
         </div>
 
         <hr>
-        <div th:text="*{userDto?.email}"></div>
+        <div th:text="*{userDto?.email}" th:onclick="|javascript:userInformation(${userDto?.id})|"></div>
         <div th:text="${writeTime}"></div>
-
+        <div th:if="${progress}">모집 중</div>
+        <div th:if="!${progress}">모집완료</div>
         <div class="pt-3">
             <div class="form-control textForm" th:text="*{content}"></div>
         </div>
 
         <div style="text-align: center">
-            <div style="display: inline-block">
-                <a th:href="@{/boards?page=1}" class="w-100 btn btn-secondary">목록</a>
+            <div style="display: inline-block" class="pt-2">
+                <a th:href="@{/board}" class="w-100 btn btn-secondary">목록</a>
             </div>
         </div>
         <hr>
@@ -51,27 +52,31 @@
         <tbody>
         <!-- REFORMAT!!!! -->
 
-        <tr th:each="comment : ${replyBoardForm.replyList}">
-            <td th:text="${comment.userDto?.email}"></td>
-            <td th:text="${reply.replyText}"></td>
-            <td th:text="${#temporals.format(reply.writeTime, 'yy-MM-dd HH:mm')}"></td>
+        <tr th:each="comment : ${boardDto.commentDtos}">
+            <td th:text="${comment.userDto?.email}" th:onClick="|javascript:userInformation(${comment.userDto?.id})|"></td>
+            <td th:text="${comment.content}"></td>
+            <td th:text="${comment.writeTime}"></td>
         </tr>
         </tbody>
     </table>
 
-    <form role="form" th:action th:object="${replyForm}" method="post">
+    <form th:if="${boardDto.progress}" role="form" th:action th:object="${commentForm}" method="post">
         <div class="row">
-            <div class="col-3" sec:authentication="principal.nickname"></div>
+            <div class="col-3" th:text="${userDto.email}"></div>
             <div class="col-5">
                 <input type="text" th:field="*{content}" class="form-control" th:errorclass="field-error" placeholder="댓글">
                 <div class="field-error" th:errors="*{content}">댓글 내용없음</div>
             </div>
-            <div class="col-1"></div>
             <div class="col-1">
                 <button type="submit" class="w-100 btn-outline-dark btn">작성</button>
             </div>
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    function userInformation(id) {
+        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+    }
+</script>
 </body>
 </html>
