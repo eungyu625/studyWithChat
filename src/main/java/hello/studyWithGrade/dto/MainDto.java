@@ -1,5 +1,6 @@
 package hello.studyWithGrade.dto;
 
+import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public class MainDto {
 
     private Long id;
     private String title;
-    private String username;
+    private UserDto userDto;
     private String writeTime;
     private Integer commentNumber = 0;
 
@@ -18,10 +19,10 @@ public class MainDto {
 
     }
 
-    public MainDto(Long id, String title, String username, LocalDateTime writeTime, Integer commentNumber) {
+    public MainDto(Long id, String title, User user, LocalDateTime writeTime, Integer commentNumber) {
         this.id = id;
         this.title = title;
-        this.username = username;
+        this.userDto = new UserDto(user);
         this.writeTime = DateTimeFormatter.ofPattern("MM-dd HH:mm").format(writeTime);
         if (commentNumber > 0) {
             this.commentNumber = commentNumber;
