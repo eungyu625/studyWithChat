@@ -2,6 +2,7 @@ package hello.studyWithGrade.controller;
 
 import hello.studyWithGrade.config.auth.LoginUser;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
+import hello.studyWithGrade.dto.UserDto;
 import hello.studyWithGrade.dto.myinfo.MyBoardDto;
 import hello.studyWithGrade.dto.myinfo.MyCommentDto;
 import hello.studyWithGrade.dto.myinfo.MyStudyDto;
@@ -12,14 +13,18 @@ import hello.studyWithGrade.service.StudyService;
 import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class UserController {
 
@@ -28,33 +33,11 @@ public class UserController {
     private final CommentService commentService;
     private final StudyService studyService;
 
-    @GetMapping("/studyWithGrade/myInfo/board")
-    public ResponseEntity<List<MyBoardDto>> getMyBoards(@LoginUser SessionUser sessionUser) {
+    @GetMapping("/userInfo/{userId}")
+    public String userInformation(@PathVariable("userId") Long userId, Model model) {
 
-        User user = userService.findByEmail(sessionUser.getEmail());
+        model.addAttribute("userDto", new UserDto(userService.findById(userId)));
 
-        List<MyBoardDto> myBoardDtos = boardService.findByUser(user).stream().map(MyBoardDto::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(myBoardDtos);
-    }
-
-    @GetMapping("/studyWithGrade/myInfo/comment")
-    public ResponseEntity<List<MyCommentDto>> getMyComments(@LoginUser SessionUser sessionUser) {
-
-        User user = userService.findByEmail(sessionUser.getEmail());
-
-        List<MyCommentDto> myCommentDtos =  commentService.findByUser(user).stream().map(MyCommentDto::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(myCommentDtos);
-    }
-
-    @GetMapping("/studyWithGrade/myInfo/study")
-    public ResponseEntity<List<MyStudyDto>> getMyStudies(@LoginUser SessionUser sessionUser) {
-
-        User user = userService.findByEmail(sessionUser.getEmail());
-
-        List<MyStudyDto> myStudyDtos = studyService.findByUser(user).stream().map(MyStudyDto::new).collect(Collectors.toList());
-
-        return ResponseEntity.ok(myStudyDtos);
+        return "users/userInfo";
     }
 }
