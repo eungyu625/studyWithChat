@@ -7,6 +7,10 @@ import hello.studyWithGrade.service.BoardService;
 import hello.studyWithGrade.service.CommentService;
 import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,16 +34,13 @@ public class HomeController {
     private final CommentService commentService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
 
-        List<MainDto> mainDtos = new ArrayList<>();
-
-        for (Board board : boardService.findAll()) {
-            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser().getEmail(), board.getWriteTime(),
-                    commentService.findByBoard(board).size()));
+        for (Board board : boardService.findAll(pageable)) {
+            System.out.println(board.getTitle());
         }
 
-        model.addAttribute("mainDtoList", mainDtos);
+        model.addAttribute("mainDtos", boardService.findAll(pageable));
 
         return "home";
     }
@@ -50,7 +51,7 @@ public class HomeController {
         List<MainDto> mainDtos = new ArrayList<>();
 
         for (Board board : boardService.findByTitleLike(title)) {
-            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser().getEmail(), board.getWriteTime(),
+            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser(), board.getWriteTime(),
                     commentService.findByBoard(board).size()));
         }
 
