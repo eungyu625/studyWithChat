@@ -30,7 +30,7 @@ public class BoardDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.progress = board.isProgress();
-        this.writeTime = DateTimeFormatter.ofPattern("MM-DD HH:mm").format(board.getWriteTime());
+        this.writeTime = DateTimeFormatter.ofPattern("MM-dd HH:mm").format(board.getWriteTime());
         this.userDto = new UserDto(board.getUser());
         this.commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
         this.commentNumbers = commentDtos.size();
