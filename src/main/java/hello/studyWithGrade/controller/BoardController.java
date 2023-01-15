@@ -3,7 +3,9 @@ package hello.studyWithGrade.controller;
 import hello.studyWithGrade.config.auth.LoginUser;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
 import hello.studyWithGrade.dto.BoardDto;
+import hello.studyWithGrade.dto.UserDto;
 import hello.studyWithGrade.dto.form.BoardForm;
+import hello.studyWithGrade.dto.form.CommentForm;
 import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
 import hello.studyWithGrade.entity.user.User;
@@ -58,8 +60,6 @@ public class BoardController {
             return "boards/boardForm";
         }
 
-        System.out.println(boardForm.getKeyword());
-
         User user = userService.findByEmail(sessionUser.getEmail());
         Board board = new Board();
         board.create(boardForm.getTitle(), boardForm.getContent(), user, List.of("new"));
@@ -69,11 +69,13 @@ public class BoardController {
     }
 
     @GetMapping("/board/{boardId}")
-    public String getBoard(@PathVariable("boardId") Long boardId, Model model) {
+    public String getBoard(@PathVariable("boardId") Long boardId, Model model, @LoginUser SessionUser sessionUser) {
 
         Board board = boardService.findById(boardId);
         List<Comment> comments = commentService.findByBoard(board);
         model.addAttribute("boardDto", new BoardDto(board, comments));
+        model.addAttribute("commentForm", new CommentForm());
+        model.addAttribute("userDto", new UserDto(userService.findByEmail(sessionUser.getEmail())));
 
         return "boards/board";
     }

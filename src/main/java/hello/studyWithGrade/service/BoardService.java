@@ -5,6 +5,8 @@ import hello.studyWithGrade.entity.Comment;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +36,9 @@ public class BoardService {
         return boardRepository.findById(id).orElse(null);
     }
 
-    public List<Board> findAll() {
+    public Page<Board> findAll(Pageable pageable) {
 
-        return boardRepository.findAll();
+        return boardRepository.findAll(pageable);
     }
 
     public List<Board> findByTitleLike(String title) {
