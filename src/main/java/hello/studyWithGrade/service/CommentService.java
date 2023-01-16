@@ -5,6 +5,8 @@ import hello.studyWithGrade.entity.Comment;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +42,15 @@ public class CommentService {
     public List<Comment> findByBoard(Board board) {
 
         return commentRepository.findByBoard(board);
+    }
+
+    public Page<Comment> findByUser(User user, Pageable pageable) {
+
+        return commentRepository.findByUser(user, pageable);
+    }
+
+    public Page<Comment> findByBoard(Board board, Pageable pageable) {
+
+        return commentRepository.findByBoard(board, pageable);
     }
 }
