@@ -28,6 +28,10 @@ public class Study {
     @OneToMany(mappedBy = "study")
     private List<StudyMember> studyMembers = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
+
     /*
      * 생성 메소드
      */
