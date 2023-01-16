@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class CommentDto {
 
     private Long id;
+    private Long boardId;
     private String content;
     private String writeTime;
     private UserDto userDto;
@@ -19,6 +20,7 @@ public class CommentDto {
 
     public CommentDto(Comment comment) {
         this.id = comment.getId();
+        this.boardId = comment.getBoard().getId();
         this.content = comment.getContent();
         this.writeTime = DateTimeFormatter.ofPattern("HH:mm").format(comment.getWriteTime());
         this.userDto = new UserDto(comment.getUser());
