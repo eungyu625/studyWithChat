@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @Transactional
@@ -41,14 +40,19 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
-    public List<Board> findByTitleLike(String title) {
+    public Page<Board> findByTitleLike(String title, Pageable pageable) {
 
-        return boardRepository.findByTitleLike(title);
+        return boardRepository.findByTitleLike(title, pageable);
     }
 
-    public List<Board> findByUser(User user) {
+    public Page<Board> findByUser(User user, Pageable pageable) {
 
-        return  boardRepository.findByUser(user);
+        return  boardRepository.findByUser(user, pageable);
+    }
+
+    public void finishRecruiting(Board board) {
+        board.finish();
+        boardRepository.save(board);
     }
 
 }
