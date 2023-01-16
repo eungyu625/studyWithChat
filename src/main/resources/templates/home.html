@@ -8,23 +8,24 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th style="width : 20%">작성자</th>
+                <th style="width : 10%">작성자</th>
                 <!-- 댓글 목록 확인 시에는 댓글 내용이 제목 대신 -->
-                <th style="width : 40%">제목</th>
+                <th style="width : 35%">제목</th>
                 <th style="width : 20%">작성일자</th>
                 <!-- 댓글 목록 확인 시에는 삭제되는 요소 -->
-                <th>댓글(갯수)</th>
+                <th style="width : 20%">댓글(갯수)</th>
+                <th>모집여부</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="main : ${mainDtos}">
-                <td th:text="${main.userDto?.email}" th:onclick="|javascript:userInformation(${main.userDto?.id})|"></td>
+                <td th:text="${main.userDto?.email}" style="cursor: pointer" th:onclick="|javascript:userInformation(${main.userDto?.id})|"></td>
                 <script type="text/javascript">
                     function userInformation(id) {
                         window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
                     }
                 </script>
-                <td th:text="${main.title}" th:onclick="|javascript:findBoard(${main.id})|"></td>
+                <td th:text="${main.title}" style="cursor: pointer" th:onclick="|javascript:findBoard(${main.id})|"></td>
                 <script type="text/javascript">
                     function findBoard(id) {
                         location.href='/board/' + id;
@@ -32,6 +33,8 @@
                 </script>
                 <td th:text="${main.writeTime}"></td>
                 <td th:text="${main.commentNumber}"></td>
+                <td th:if="!${main.progress}">모집 중</td>
+                <td th:if="${main.progress}">모집완료</td>
             </tr>
             </tbody>
         </table>

@@ -19,21 +19,33 @@
         </div>
 
         <hr>
-        <div th:text="*{userDto?.email}" th:onclick="|javascript:userInformation(${userDto?.id})|"></div>
-        <div th:text="${writeTime}"></div>
-        <div th:if="${progress}">모집 중</div>
-        <div th:if="!${progress}">모집완료</div>
+        <div>
+            <span style="font-size: 1.1rem; cursor: pointer;" th:text="*{userDto?.email}" th:onclick="|javascript:userInformation(*{userDto?.id})|"></span>
+        </div>
+        <div>
+            <span style="font-size: 1.1rem;" th:text="*{writeTime}"></span>
+        </div>
+        <div>
+            <span th:if="!*{progress}" class="btn btn-outline-primary">모집 중</span>
+        </div>
+        <div>
+            <span th:if="*{progress}" class="btn btn-primary">모집완료</span>
+        </div>
         <div class="pt-3">
             <div class="form-control textForm" th:text="*{content}"></div>
         </div>
-
-        <div style="text-align: center">
-            <div style="display: inline-block" class="pt-2">
-                <a th:href="@{/board}" class="w-100 btn btn-secondary">목록</a>
-            </div>
-        </div>
-        <hr>
     </div>
+    <div style="text-align: center">
+        <div th:if="${boardDto.userDto?.id} == ${userDto.id} and !${boardDto.progress}" style="display: inline-block" class="pt-2">
+            <form>
+                <input type="submit" name="모집완료" value="모집완료" class="w-100 btn btn-outline-info">
+            </form>
+        </div>
+        <div style="display: inline-block" class="pt-2">
+            <a th:href="@{/}" class="w-100 btn btn-outline-secondary">목록</a>
+        </div>
+    </div>
+    <hr>
 
     <div class="pt-2">
         댓글(<span th:text="${boardDto.commentNumbers}"></span>)
@@ -50,17 +62,16 @@
         </tr>
         </thead>
         <tbody>
-        <!-- REFORMAT!!!! -->
 
         <tr th:each="comment : ${boardDto.commentDtos}">
-            <td th:text="${comment.userDto?.email}" th:onClick="|javascript:userInformation(${comment.userDto?.id})|"></td>
+            <td th:text="${comment.userDto?.email}" style="cursor: pointer;" th:onClick="|javascript:userInformation(${comment.boardId}, ${comment.userDto?.id})|"></td>
             <td th:text="${comment.content}"></td>
             <td th:text="${comment.writeTime}"></td>
         </tr>
         </tbody>
     </table>
 
-    <form th:if="${boardDto.progress}" role="form" th:action th:object="${commentForm}" method="post">
+    <form th:if="!${boardDto.progress}" role="form" th:action th:object="${commentForm}" method="post">
         <div class="row">
             <div class="col-3" th:text="${userDto.email}"></div>
             <div class="col-5">
@@ -74,8 +85,8 @@
     </form>
 </div>
 <script type="text/javascript">
-    function userInformation(id) {
-        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+    function userInformation(boardId, userId) {
+        window.open('/userInfo/' + boardId + '/' + userId, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
     }
 </script>
 </body>

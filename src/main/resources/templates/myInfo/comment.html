@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/myCommentHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <!-- 댓글 목록 확인 시에는 댓글 내용이 제목 대신 -->
+                <th style="width : 40%">내용</th>
+                <th style="width : 20%">게시글 젲목</th>
+                <!-- 댓글 목록 확인 시에는 삭제되는 요소 -->
+                <th>작성일자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment : ${myCommentDtos}">
+                <td th:text="${comment.content}" style="cursor: pointer;" th:onclick="|javascript:findBoard(${comment.boardId})|"></td>
+                <td th:text="${comment.boardTitle}" style="cursor: pointer;" th:onclick="|javascript:findBoard(${comment.boardId})|"></td>
+                <td th:text="${comment.writTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function findBoard(id) {
+        location.href='/board/' + id;
+    }
+</script>
+</body>
+</html>
