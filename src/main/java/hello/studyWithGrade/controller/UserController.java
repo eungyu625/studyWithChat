@@ -6,12 +6,19 @@ import hello.studyWithGrade.dto.UserDto;
 import hello.studyWithGrade.dto.myinfo.MyBoardDto;
 import hello.studyWithGrade.dto.myinfo.MyCommentDto;
 import hello.studyWithGrade.dto.myinfo.MyStudyDto;
+import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.Comment;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.service.BoardService;
 import hello.studyWithGrade.service.CommentService;
 import hello.studyWithGrade.service.StudyService;
 import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,5 +46,28 @@ public class UserController {
         model.addAttribute("userDto", new UserDto(userService.findById(userId)));
 
         return "users/userInfo";
+    }
+
+    @GetMapping("/myInfo/board")
+    public String myBoardInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                     @LoginUser SessionUser sessionUser, Model model) {
+        Page<Board> boardPage = boardService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
+        Page<MyBoardDto> myBoardDtos = boardPage.map(board -> new MyBoardDto(board, commentService.findByBoard(board).size()));
+
+        model.addAttribute("myBoardDtos", myBoardDtos);
+
+        return "myInfo/board";
+    }
+
+    @GetMapping("/myInfo/comment")
+    public String myCommentInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                       @LoginUser SessionUser sessionUser, Model model) {
+
+        Page<Comment> commentPage = commentService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
+        Page<MyCommentDto> myCommentDtos = commentPage.map(MyCommentDto::new);
+
+        model.addAttribute("myCommentDtos", myCommentDtos);
+
+        return "myInfo/comment";
     }
 }
