@@ -12,4 +12,5 @@ public class BoardForm {
     private String title;
     private String content;
     private List<String> keyword;
+    private String studyName;
 }
