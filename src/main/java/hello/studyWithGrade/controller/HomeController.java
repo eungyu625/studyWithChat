@@ -34,29 +34,19 @@ public class HomeController {
     private final CommentService commentService;
 
     @GetMapping("/")
-    public String home(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String home(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                       @RequestParam(defaultValue = "1", required = true) String page, Model model) {
 
-        for (Board board : boardService.findAll(pageable)) {
-            System.out.println(board.getTitle());
+        Page<Board> boardPage = boardService.findAll(pageable);
+        Page<MainDto> mainDtos = boardPage.map(board -> new MainDto(board.getId(), board.getTitle(), board.getUser(),
+                board.isProgress(), board.getWriteTime(), commentService.findByBoard(board).size()));
+
+        for (MainDto mainDto : mainDtos) {
+            System.out.println(mainDto.getWriteTime());
         }
 
-        model.addAttribute("mainDtos", boardService.findAll(pageable));
+        model.addAttribute("mainDtos", mainDtos);
 
         return "home";
-    }
-
-    @PostMapping("/")
-    public String searchByTitle(@RequestParam String title, Model model) {
-
-        List<MainDto> mainDtos = new ArrayList<>();
-
-        for (Board board : boardService.findByTitleLike(title)) {
-            mainDtos.add(new MainDto(board.getId(), board.getTitle(), board.getUser(), board.getWriteTime(),
-                    commentService.findByBoard(board).size()));
-        }
-
-        model.addAttribute("mainDtoList", mainDtos);
-
-        return "redirect:/";
     }
 }
