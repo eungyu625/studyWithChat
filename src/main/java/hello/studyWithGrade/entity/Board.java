@@ -28,6 +28,10 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "study_id")
+    private Study study;
+
     private boolean progress = false;
 
     private LocalDateTime writeTime;
@@ -38,10 +42,11 @@ public class Board {
     /*
      * 생성 메소드
      */
-    public void create(String title, String content, User user, List<String> keyword) {
+    public void create(String title, String content, User user, List<String> keyword, Study study) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.study = study;
         this.writeTime = LocalDateTime.now();
         this.keyword = keyword.stream().toList();
     }
