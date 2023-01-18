@@ -41,10 +41,6 @@ public class HomeController {
         Page<MainDto> mainDtos = boardPage.map(board -> new MainDto(board.getId(), board.getTitle(), board.getUser(),
                 board.isProgress(), board.getWriteTime(), commentService.findByBoard(board).size()));
 
-        for (MainDto mainDto : mainDtos) {
-            System.out.println(mainDto.getWriteTime());
-        }
-
         model.addAttribute("mainDtos", mainDtos);
 
         return "home";
