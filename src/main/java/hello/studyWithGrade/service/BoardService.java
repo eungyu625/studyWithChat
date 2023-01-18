@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -48,6 +50,11 @@ public class BoardService {
     public Page<Board> findByUser(User user, Pageable pageable) {
 
         return  boardRepository.findByUser(user, pageable);
+    }
+
+    public List<Board> findAll() {
+
+        return boardRepository.findAll();
     }
 
     public void finishRecruiting(Board board) {
