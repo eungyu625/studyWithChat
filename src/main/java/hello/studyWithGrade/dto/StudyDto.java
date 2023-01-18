@@ -12,8 +12,9 @@ public class StudyDto {
 
     private Long id;
     private String name;
+    private UserDto owner;
     private boolean progress;
-    private List<UserDto> userDtos;
+    private List<StudyMemberDto> studyMemberDtos;
 
     protected StudyDto() {
 
@@ -22,7 +23,8 @@ public class StudyDto {
     public StudyDto(Study study, List<User> users) {
         this.id = study.getId();
         this.name = study.getName();
+        this.owner = new UserDto(study.getUser());
         this.progress = study.isProgress();
-        this.userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
+        this.studyMemberDtos = users.stream().map(user -> new StudyMemberDto(user.getId(), user.getEmail())).collect(Collectors.toList());
     }
 }
