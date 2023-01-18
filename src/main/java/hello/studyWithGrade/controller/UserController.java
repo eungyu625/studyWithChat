@@ -8,11 +8,10 @@ import hello.studyWithGrade.dto.myinfo.MyCommentDto;
 import hello.studyWithGrade.dto.myinfo.MyStudyDto;
 import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
+import hello.studyWithGrade.entity.Study;
+import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
-import hello.studyWithGrade.service.BoardService;
-import hello.studyWithGrade.service.CommentService;
-import hello.studyWithGrade.service.StudyService;
-import hello.studyWithGrade.service.UserService;
+import hello.studyWithGrade.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,6 +38,7 @@ public class UserController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final StudyService studyService;
+    private final StudyMemberService studyMemberService;
 
     @GetMapping("/userInfo/{userId}")
     public String userInformation(@PathVariable("userId") Long userId, Model model) {
@@ -56,7 +56,7 @@ public class UserController {
 
         model.addAttribute("myBoardDtos", myBoardDtos);
 
-        return "myInfo/board";
+        return "myInfo/boards";
     }
 
     @GetMapping("/myInfo/comment")
@@ -68,6 +68,18 @@ public class UserController {
 
         model.addAttribute("myCommentDtos", myCommentDtos);
 
-        return "myInfo/comment";
+        return "myInfo/comments";
+    }
+
+    @GetMapping("/myInfo/study")
+    public String myStudyInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                     @LoginUser SessionUser sessionUser, Model model) {
+
+        Page<StudyMember> studyMembers = studyMemberService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
+        Page<Study> studies = studyMembers.map(StudyMember::getStudy);
+
+        model.addAttribute("myStudyDto", studies.map(MyStudyDto::new));
+
+        return "myInfo/studies";
     }
 }
