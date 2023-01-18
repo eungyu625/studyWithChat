@@ -92,15 +92,17 @@ public class BoardController {
     }
 
     @PostMapping("/board/{boardId}")
-    public String recruiting(@PathVariable("boardId") Long boardId, @Validated @ModelAttribute CommentForm commentForm,
-                             BindingResult result, @LoginUser SessionUser sessionUser) {
+    public String recruiting(@Validated @ModelAttribute CommentForm commentForm, BindingResult result,
+                             @PathVariable("boardId") Long boardId, Model model, @LoginUser SessionUser sessionUser) {
 
         if (!StringUtils.hasText(commentForm.getContent())) {
             result.rejectValue("content", "required", null, null);
         }
 
         if (result.hasErrors()) {
-            return "boards/boardForm";
+            model.addAttribute("boardDto", new BoardDto(boardService.findById(boardId), commentService.findByBoard(boardService.findById(boardId))));
+            model.addAttribute("userDto", new UserDto(userService.findByEmail(sessionUser.getEmail())));
+            return "boards/board";
         }
 
         Board board = boardService.findById(boardId);
