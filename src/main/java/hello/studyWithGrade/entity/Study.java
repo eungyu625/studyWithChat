@@ -28,7 +28,7 @@ public class Study {
     @OneToMany(mappedBy = "study")
     private List<StudyMember> studyMembers = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "board_id")
     private Board board;
 
