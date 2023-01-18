@@ -1,6 +1,7 @@
 package hello.studyWithGrade.service;
 
 import hello.studyWithGrade.entity.Board;
+import hello.studyWithGrade.entity.Study;
 import hello.studyWithGrade.entity.user.Role;
 import hello.studyWithGrade.entity.user.User;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,9 @@ class BoardServiceTest {
         user.create("123", Role.USER);
         userService.join(user);
         Board board = new Board();
-        board.create("title", "content", user);
+        Study study = new Study();
+        study.create("123", user);
+        board.create("title", "content", user, List.of("spring"), study);
         boardService.write(board);
 
         // when
@@ -49,9 +52,13 @@ class BoardServiceTest {
         user.create("123", Role.USER);
         userService.join(user);
         Board board = new Board();
-        board.create("title", "content", user);
+        Study study = new Study();
+        study.create("123", user);
+        board.create("title", "content", user, List.of("spring"), study);
         Board board2 = new Board();
-        board2.create("title", "content", user);
+        Study study2 = new Study();
+        study.create("123", user);
+        board2.create("title", "content", user, List.of("spring"), study2);
         boardService.write(board);
         boardService.write(board2);
 

@@ -2,6 +2,7 @@ package hello.studyWithGrade.service;
 
 import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
+import hello.studyWithGrade.entity.Study;
 import hello.studyWithGrade.entity.user.Role;
 import hello.studyWithGrade.entity.user.User;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,9 @@ public class CommentServiceTest {
         userService.join(user);
 
         Board board = new Board();
-        board.create("abc", "abc", user);
+        Study study = new Study();
+        study.create("123", user);
+        board.create("abc", "abc", user, List.of("spring"), study);
         boardService.write(board);
 
         Comment comment = new Comment();
@@ -59,7 +62,9 @@ public class CommentServiceTest {
         userService.join(user);
 
         Board board = new Board();
-        board.create("abc", "abc", user);
+        Study study = new Study();
+        study.create("123", user);
+        board.create("abc", "abc", user, List.of("spring"), study);
         boardService.write(board);
 
         Comment comment = new Comment();
@@ -84,7 +89,9 @@ public class CommentServiceTest {
         userService.join(user);
 
         Board board = new Board();
-        board.create("abc", "abc", user);
+        Study study = new Study();
+        study.create("123", user);
+        board.create("abc", "abc", user, List.of("spring"), study);
         boardService.write(board);
 
         Comment comment = new Comment();
