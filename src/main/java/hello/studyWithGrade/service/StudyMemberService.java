@@ -5,6 +5,8 @@ import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.StudyMemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +49,15 @@ public class StudyMemberService {
     public List<StudyMember> findByStudy(Study study) {
 
         return studyMemberRepository.findByStudy(study);
+    }
+
+    public Page<StudyMember> findByUser(User user, Pageable pageable) {
+
+        return studyMemberRepository.findByUser(user, pageable);
+    }
+
+    public Page<StudyMember> findByStudy(Study study, Pageable pageable) {
+
+        return studyMemberRepository.findByStudy(study, pageable);
     }
 }
