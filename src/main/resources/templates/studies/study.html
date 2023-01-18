@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div>
+        <div>
+            스터디명 : <span th:text="${studyDto.name}"></span>
+        </div>
+        <div>
+            스터디장 : <span th:text="${studyDto.owner?.email}" th:onclick="|javascript:userInformation(${studyDto.owner?.id})|"></span>
+        </div>
+        <div>
+            <span th:if="!${studyDto.progress}" class="btn btn-outline-success">진행 중</span>
+            <span th:if="${studyDto.progress}" class="btn btn-success">완료</span>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>스티디원</th>
+                <th>평가여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${studyDto.members}">
+                <td th:text="${user.email}" th:onclick="|javascript:userInformation(${user.id})|"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function userInformation(id) {
+        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+    }
+
+    function estimate(id) {
+        location.href='/estimate/' + id;
+    }
+</script>
+</body>
+</html>
