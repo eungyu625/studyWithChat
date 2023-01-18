@@ -1,8 +1,12 @@
 package hello.studyWithGrade.controller;
 
+import hello.studyWithGrade.config.auth.LoginUser;
+import hello.studyWithGrade.config.auth.dto.SessionUser;
 import hello.studyWithGrade.dto.UserDto;
+import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.service.BoardService;
+import hello.studyWithGrade.service.CommentService;
 import hello.studyWithGrade.service.StudyService;
 import hello.studyWithGrade.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +23,11 @@ public class StudyController {
 
     private final UserService userService;
     private final BoardService boardService;
+    private final CommentService commentService;
     private final StudyService studyService;
 
     @GetMapping("/userInfo/forStudy/{boardId}/{userId}")
-    public String applicantInformation(@PathVariable("boardId") Long boardId, @PathVariable("userId") Long userId,
+    public String applicantInformation(@PathVariable("boardId") Long boardId, @PathVariable("userId") Long userId, @LoginUser SessionUser sessionUser,
                                        @RequestParam(value = "선발", required = false) String pick, Model model) {
 
         User user = userService.findById(userId);
@@ -30,11 +35,38 @@ public class StudyController {
         if (StringUtils.hasText(pick)) {
             studyService.addMember(boardService.findById(boardId).getStudy(), user);
 
+            model.addAttribute("userDto", new UserDto(user));
+            model.addAttribute("isMember", true);
+
             return "users/forStudy/userInfo";
         }
 
         model.addAttribute("userDto", new UserDto(user));
 
+        boolean isMember = false;
+
+        for (StudyMember studyMember : boardService.findById(boardId).getStudy().getStudyMembers()) {
+            if (studyMember.getUser() == user) {
+                isMember = true;
+                break;
+            }
+        }
+
+        model.addAttribute("userDto", new UserDto(user));
+        model.addAttribute("isMember", isMember);
+
         return "users/forStudy/userInfo";
+    }
+
+    @GetMapping("/study/{studyId}")
+    public String studyInformation(@PathVariable("studyId") Long studyId) {
+
+        return "studies/study";
+    }
+
+    @GetMapping("/estimate/{studyMemberId}")
+    public String estimateStudyMember(@PathVariable("studyMemberId") Long studyMemberId) {
+
+        return "studies/estimateForm";
     }
 }
