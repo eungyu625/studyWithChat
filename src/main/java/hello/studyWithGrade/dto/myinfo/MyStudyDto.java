@@ -11,9 +11,11 @@ public class MyStudyDto {
 
     private Long id;
     private String name;
+    private Long ownerId;
     private String ownerName;
     private Integer memberNumber;
     private boolean progress;
+    private boolean start;
 
     protected MyStudyDto() {
 
@@ -22,8 +24,10 @@ public class MyStudyDto {
     public MyStudyDto(Study study) {
         this.id = study.getId();
         this.name = study.getName();
+        this.ownerId = study.getUser().getId();
         this.ownerName = study.getUser().getEmail();
         this.memberNumber = study.getStudyMembers().size();
         this.progress = study.isProgress();
+        this.start = study.isStart();
     }
 }
