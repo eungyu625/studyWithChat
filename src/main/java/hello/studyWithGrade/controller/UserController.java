@@ -5,6 +5,7 @@ import hello.studyWithGrade.config.auth.dto.SessionUser;
 import hello.studyWithGrade.dto.UserDto;
 import hello.studyWithGrade.dto.myinfo.MyBoardDto;
 import hello.studyWithGrade.dto.myinfo.MyCommentDto;
+import hello.studyWithGrade.dto.myinfo.MyDto;
 import hello.studyWithGrade.dto.myinfo.MyStudyDto;
 import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
@@ -78,7 +79,9 @@ public class UserController {
         Page<StudyMember> studyMembers = studyMemberService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
         Page<Study> studies = studyMembers.map(StudyMember::getStudy);
 
-        model.addAttribute("myStudyDto", studies.map(MyStudyDto::new));
+        User user = userService.findByEmail(sessionUser.getEmail());
+        model.addAttribute("myDto", new MyDto(user.getId(), user.getEmail()));
+        model.addAttribute("myStudyDtos", studies.map(MyStudyDto::new));
 
         return "myInfo/studies";
     }
