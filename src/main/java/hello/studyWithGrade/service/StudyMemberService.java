@@ -60,4 +60,9 @@ public class StudyMemberService {
 
         return studyMemberRepository.findByStudy(study, pageable);
     }
+
+    public Page<StudyMember> findByUserWhichIsStarted(User user, Pageable pageable) {
+
+        return studyMemberRepository.findByUserWhichIsStarted(user, pageable);
+    }
 }
