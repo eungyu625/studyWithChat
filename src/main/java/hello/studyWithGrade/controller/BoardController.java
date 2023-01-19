@@ -68,6 +68,7 @@ public class BoardController {
         Board board = new Board();
         Study study = new Study();
         study.create(boardForm.getStudyName(), user);
+        studyService.create(study);
         board.create(boardForm.getTitle(), boardForm.getContent(), user, boardForm.getKeyword(), study);
         boardService.write(board);
 
@@ -79,6 +80,7 @@ public class BoardController {
 
         if (StringUtils.hasText(progress)) {
             boardService.finishRecruiting(boardService.findById(boardId));
+            studyService.start(boardService.findById(boardId).getStudy());
             return "redirect:/board/" + boardId;
         }
 
