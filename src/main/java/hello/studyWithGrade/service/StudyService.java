@@ -1,10 +1,13 @@
 package hello.studyWithGrade.service;
 
+import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Study;
 import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +54,15 @@ public class StudyService {
     // 탈퇴한 스터디원 정보 삭제
     public void removeMember(User user) {
         studyMemberService.deleteMember(studyMemberService.findByUser(user));
+    }
+
+    public void finish(Study study) {
+        study.finish();
+        studyRepository.save(study);
+    }
+
+    public void start(Study study) {
+        study.startStudy();
+        studyRepository.save(study);
     }
 }

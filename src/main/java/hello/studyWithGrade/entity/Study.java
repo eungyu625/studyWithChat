@@ -21,6 +21,8 @@ public class Study {
 
     private boolean progress = false;
 
+    private boolean start = false;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,7 +31,6 @@ public class Study {
     private List<StudyMember> studyMembers = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "board_id")
     private Board board;
 
     /*
@@ -38,6 +39,10 @@ public class Study {
     public void create(String name, User user) {
         this.name = name;
         this.user = user;
+    }
+
+    public void startStudy() {
+        start = true;
     }
 
     public void finish() {
