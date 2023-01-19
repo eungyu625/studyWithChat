@@ -2,7 +2,9 @@ package hello.studyWithGrade.controller;
 
 import hello.studyWithGrade.config.auth.LoginUser;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
+import hello.studyWithGrade.dto.StudyDto;
 import hello.studyWithGrade.dto.UserDto;
+import hello.studyWithGrade.entity.Study;
 import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.service.BoardService;
@@ -16,6 +18,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -59,13 +63,44 @@ public class StudyController {
     }
 
     @GetMapping("/study/{studyId}")
-    public String studyInformation(@PathVariable("studyId") Long studyId) {
+    public String studyInformation(@PathVariable("studyId") Long studyId, Model model) {
 
-        return "studies/study";
+        Study study = studyService.findById(studyId);
+        List<User> users = userService.findStudyMembersByStudy(study);
+        StudyDto studyDto = new StudyDto(study, users);
+
+        model.addAttribute("studyDto", studyDto);
+
+        if (!study.isProgress()) {
+            return "studies/study";
+        }
+
+        return "studies/finishedStudy";
+    }
+
+    @GetMapping("/myStudy/{myStudyId}")
+    public String myStudyInformation(@PathVariable("myStudyId") Long myStudyId, Model model,
+                                     @RequestParam(value = "진행완료", required = false) String end) {
+
+        if (StringUtils.hasText(end)) {
+            studyService.finish(studyService.findById(myStudyId));
+        }
+
+        Study study = studyService.findById(myStudyId);
+        List<User> users = userService.findStudyMembersByStudy(study);
+        StudyDto studyDto = new StudyDto(study, users);
+
+        model.addAttribute("studyDto", studyDto);
+
+        if (!study.isProgress()) {
+            return "studies/myStudy";
+        }
+
+        return "studies/finishedStudy";
     }
 
     @GetMapping("/estimate/{studyMemberId}")
-    public String estimateStudyMember(@PathVariable("studyMemberId") Long studyMemberId) {
+    public String estimateStudyMember(@PathVariable("studyMemberId") Long studyMemberId, @RequestParam("평점") String grade) {
 
         return "studies/estimateForm";
     }
