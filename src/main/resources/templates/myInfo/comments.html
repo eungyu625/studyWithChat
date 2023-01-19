@@ -19,7 +19,7 @@
             <tr th:each="comment : ${myCommentDtos}">
                 <td th:text="${comment.content}" style="cursor: pointer;" th:onclick="|javascript:findBoard(${comment.boardId})|"></td>
                 <td th:text="${comment.boardTitle}" style="cursor: pointer;" th:onclick="|javascript:findBoard(${comment.boardId})|"></td>
-                <td th:text="${comment.writTime}"></td>
+                <td th:text="${comment.writeTime}"></td>
             </tr>
             </tbody>
         </table>

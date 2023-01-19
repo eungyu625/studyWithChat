@@ -13,15 +13,15 @@
                 <th style="width : 20%">스터디장</th>
                 <!-- 댓글 목록 확인 시에는 삭제되는 요소 -->
                 <th style="width : 20%">인원</th>
-                <th>완료여부</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="study : ${myStudyDtos}">
-                <td th:text="${study.name}" style="cursor: pointer" th:onclick="|javascript:findStudy(${myDto.email}, ${study.ownerName}, ${study.id})|"></td>
+                <td th:text="${study.name}" style="cursor: pointer" th:onclick="|javascript:findStudy(${myDto.id}, ${study.ownerId}, ${study.id})|"></td>
                 <script type="text/javascript">
-                    function findStudy(myName, ownerName, id) {
-                        if (myName == ownerName) {
+                    function findStudy(myId, ownerId, id) {
+                        if (myId== ownerId) {
                             window.open('/myStudy/' + id, 'STUDY INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
                         } else {
                             window.open('/study/' + id, 'STUDY INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
@@ -30,8 +30,9 @@
                 </script>
                 <td th:text="${study.ownerName}"></td>
                 <td th:text="${study.memberNumber}"></td>
-                <td th:if="!${board.progress}">진행 중</td>
-                <td th:if="${board.progress}">완료</td>
+                <td th:if="!${study.start} and !${study.progress}">모집 중</td>
+                <td th:if="!${study.progress} and ${study.start}">진행 중</td>
+                <td th:if="${study.progress} and ${study.start}">완료</td>
             </tr>
             </tbody>
         </table>
