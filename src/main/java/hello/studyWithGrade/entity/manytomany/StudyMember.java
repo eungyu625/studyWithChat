@@ -1,6 +1,7 @@
 package hello.studyWithGrade.entity.manytomany;
 
 import hello.studyWithGrade.entity.Study;
+import hello.studyWithGrade.entity.estimate.EstimatedMember;
 import hello.studyWithGrade.entity.user.User;
 import lombok.Getter;
 
@@ -23,6 +24,9 @@ public class StudyMember {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
+
+    @Embedded
+    private EstimatedMember estimatedMember;
 
     protected StudyMember() {
 
