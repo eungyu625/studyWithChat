@@ -4,13 +4,11 @@ import hello.studyWithGrade.config.auth.LoginUser;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
 import hello.studyWithGrade.dto.StudyDto;
 import hello.studyWithGrade.dto.UserDto;
+import hello.studyWithGrade.dto.myinfo.MyDto;
 import hello.studyWithGrade.entity.Study;
 import hello.studyWithGrade.entity.manytomany.StudyMember;
 import hello.studyWithGrade.entity.user.User;
-import hello.studyWithGrade.service.BoardService;
-import hello.studyWithGrade.service.CommentService;
-import hello.studyWithGrade.service.StudyService;
-import hello.studyWithGrade.service.UserService;
+import hello.studyWithGrade.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +27,7 @@ public class StudyController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final StudyService studyService;
+    private final StudyMemberService studyMemberService;
 
     @GetMapping("/userInfo/forStudy/{boardId}/{userId}")
     public String applicantInformation(@PathVariable("boardId") Long boardId, @PathVariable("userId") Long userId, @LoginUser SessionUser sessionUser,
@@ -79,18 +78,22 @@ public class StudyController {
     }
 
     @GetMapping("/myStudy/{myStudyId}")
-    public String myStudyInformation(@PathVariable("myStudyId") Long myStudyId, Model model,
+    public String myStudyInformation(@PathVariable("myStudyId") Long myStudyId, Model model, @LoginUser SessionUser sessionUser,
                                      @RequestParam(value = "진행완료", required = false) String end) {
 
         if (StringUtils.hasText(end)) {
             studyService.finish(studyService.findById(myStudyId));
         }
 
+        User user = userService.findByEmail(sessionUser.getEmail());
+
         Study study = studyService.findById(myStudyId);
+        StudyMember studyMember = studyMemberService.findByUserAndStudy(user, study);
         List<User> users = userService.findStudyMembersByStudy(study);
         StudyDto studyDto = new StudyDto(study, users);
 
         model.addAttribute("studyDto", studyDto);
+        model.addAttribute("myStudyMemberDto", new MyDto(user.getId(), user.getEmail()));
 
         if (!study.isProgress()) {
             return "studies/myStudy";
@@ -99,8 +102,9 @@ public class StudyController {
         return "studies/finishedStudy";
     }
 
-    @GetMapping("/estimate/{studyMemberId}")
-    public String estimateStudyMember(@PathVariable("studyMemberId") Long studyMemberId, @RequestParam("평점") String grade) {
+    @GetMapping("/estimate/{studyId}/{studyMemberId}")
+    public String estimateStudyMember(@PathVariable("studyId") Long studyId, @LoginUser SessionUser sessionUser,
+                                      @PathVariable("studyMemberId") Long studyMemberId, @RequestParam("평점") String grade) {
 
         return "studies/estimateForm";
     }
