@@ -7,7 +7,6 @@ public class StudyMemberDto {
 
     private Long id;
     private String email;
-    private boolean estimate;
 
     protected StudyMemberDto() {
 
