@@ -88,7 +88,6 @@ public class StudyController {
         User user = userService.findByEmail(sessionUser.getEmail());
 
         Study study = studyService.findById(myStudyId);
-        StudyMember studyMember = studyMemberService.findByUserAndStudy(user, study);
         List<User> users = userService.findStudyMembersByStudy(study);
         StudyDto studyDto = new StudyDto(study, users);
 
