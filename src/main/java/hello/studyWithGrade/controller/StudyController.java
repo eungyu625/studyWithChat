@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -62,13 +63,24 @@ public class StudyController {
     }
 
     @GetMapping("/study/{studyId}")
-    public String studyInformation(@PathVariable("studyId") Long studyId, Model model) {
+    public String studyInformation(@PathVariable("studyId") Long studyId, Model model, @LoginUser SessionUser sessionUser) {
 
         Study study = studyService.findById(studyId);
-        List<User> users = userService.findStudyMembersByStudy(study);
-        StudyDto studyDto = new StudyDto(study, users);
+        User user = userService.findByEmail(sessionUser.getEmail());
+        StudyMember studyMember = studyMemberService.findByUserAndStudy(user, study);
+        List<User> studyMembers = userService.findStudyMembersByStudy(study);
+        List<User> notEstimatedMembers = new ArrayList<>();
+        List<User> estimatedMembers = new ArrayList<>();
 
-        model.addAttribute("studyDto", studyDto);
+        for (User member : studyMembers) {
+            if (studyMember.getEstimatedMembers().contains(member.getId())) {
+                estimatedMembers.add(member);
+            } else {
+                notEstimatedMembers.add(member);
+            }
+        }
+
+        model.addAttribute("studyDto", new StudyDto(study, notEstimatedMembers, estimatedMembers));
 
         if (!study.isProgress()) {
             return "studies/study";
@@ -85,14 +97,22 @@ public class StudyController {
             studyService.finish(studyService.findById(myStudyId));
         }
 
-        User user = userService.findByEmail(sessionUser.getEmail());
-
         Study study = studyService.findById(myStudyId);
-        List<User> users = userService.findStudyMembersByStudy(study);
-        StudyDto studyDto = new StudyDto(study, users);
+        User user = userService.findByEmail(sessionUser.getEmail());
+        StudyMember studyMember = studyMemberService.findByUserAndStudy(user, study);
+        List<User> studyMembers = userService.findStudyMembersByStudy(study);
+        List<User> notEstimatedMembers = new ArrayList<>();
+        List<User> estimatedMembers = new ArrayList<>();
 
-        model.addAttribute("studyDto", studyDto);
-        model.addAttribute("myStudyMemberDto", new MyDto(user.getId(), user.getEmail()));
+        for (User member : studyMembers) {
+            if (studyMember.getEstimatedMembers().contains(member.getId())) {
+                estimatedMembers.add(member);
+            } else {
+                notEstimatedMembers.add(member);
+            }
+        }
+
+        model.addAttribute("studyDto", new StudyDto(study, notEstimatedMembers, estimatedMembers));
 
         if (!study.isProgress()) {
             return "studies/myStudy";
@@ -103,7 +123,11 @@ public class StudyController {
 
     @GetMapping("/estimate/{studyId}/{studyMemberId}")
     public String estimateStudyMember(@PathVariable("studyId") Long studyId, @LoginUser SessionUser sessionUser,
-                                      @PathVariable("studyMemberId") Long studyMemberId, @RequestParam("평점") String grade) {
+                                      @PathVariable("studyMemberId") Long studyMemberId, @RequestParam(value = "평점", required = false) String grade) {
+
+        if (StringUtils.hasText(grade)) {
+            System.out.println(grade);
+        }
 
         return "studies/estimateForm";
     }
