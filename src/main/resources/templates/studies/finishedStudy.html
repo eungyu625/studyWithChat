@@ -18,24 +18,29 @@
             <thead>
             <tr>
                 <th>스티디원</th>
+                <th>평가여부</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${studyDto.studyMemberDtos}">
+            <tr th:each="user : ${studyDto.notEstimatedMembers}">
+                <td th:text="${user.email}" style="cursor: pointer;" th:onclick="|javascript:userInformation(${user.id})|"></td>
+                <td class="btn btn-outline-warning" th:onclick="|javascript:estimate(${studyDto.id}, ${user.id})|">평가하기</td>
+            </tr>
+            <tr th:each="user : ${studyDto.estimatedMembers}">
                 <td th:text="${user.email}" th:onclick="|javascript:userInformation(${user.id})|"></td>
+                <td class="btn btn-warning">평가완료</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="" style="text-align: center">
-        <form>
-            <button class="btn btn-outline-success" th:onclick="|javascript:estimate(${studyDto.id})|">평가하기</button>
-        </form>
-    </div>
 </div>
 <script type="text/javascript">
-    function estimate(studyId) {
-        window.open('/estimate/' + studyId, 'USER ESTIMATE', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+    function estimate(studyId, studyMemberId) {
+        window.open('/estimate/' + studyId + '/' + studyMemberId, 'USER ESTIMATE', 'scrollbars=no, width=500, height=300, status=no, resizable=no');
+    }
+
+    function userInformation(id) {
+        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=500, height=300, status=no, resizable=no');
     }
 </script>
 </body>

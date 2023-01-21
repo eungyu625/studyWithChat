@@ -22,7 +22,7 @@
                 <td th:text="${main.userDto?.email}" style="cursor: pointer" th:onclick="|javascript:userInformation(${main.userDto?.id})|"></td>
                 <script type="text/javascript">
                     function userInformation(id) {
-                        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=300, height=300, status=no, resizable=no');
+                        window.open('/userInfo/' + id, 'USER INFORMATION', 'scrollbars=no, width=500, height=300, status=no, resizable=no');
                     }
                 </script>
                 <td th:text="${main.title}" style="cursor: pointer" th:onclick="|javascript:findBoard(${main.id})|"></td>
