@@ -41,6 +41,14 @@ public class StudyMemberService {
         studyMemberRepository.deleteAllInBatch(studyMembers);
     }
 
+    /*
+     * 스터디원 평가 완료 시 estimatedMember에 추가
+     */
+    public void estimated(StudyMember studyMember, User user) {
+        studyMember.estimated(user);
+        studyMemberRepository.save(studyMember);
+    }
+
     public List<StudyMember> findByUser(User user) {
 
         return studyMemberRepository.findByUser(user);
@@ -64,5 +72,10 @@ public class StudyMemberService {
     public Page<StudyMember> findByUserWhichIsStarted(User user, Pageable pageable) {
 
         return studyMemberRepository.findByUserWhichIsStarted(user, pageable);
+    }
+
+    public StudyMember findByUserAndStudy(User user, Study study) {
+
+        return studyMemberRepository.findByUserAndStudy(user, study).orElse(null);
     }
 }
