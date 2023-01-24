@@ -34,6 +34,21 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public void finish_study(User user) {
+        user.end_study();
+        userRepository.save(user);
+    }
+
+    public void start_study(User user) {
+        user.start_study();
+        userRepository.save(user);
+    }
+
+    public void estimate(User user, Double grade) {
+        user.estimated(grade);
+        userRepository.save(user);
+    }
+
     public User findByEmail(String email) {
 
         return userRepository.findByEmail(email).orElse(null);
