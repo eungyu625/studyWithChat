@@ -5,7 +5,7 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div>
-        <table class="table table-striped">
+        <table class="table table-striped contents">
             <thead>
             <tr>
                 <th style="width : 10%">작성자</th>
@@ -39,11 +39,41 @@
             </tbody>
         </table>
     </div>
-    <div style="text-align: center">
-        <input type="text" id="title" name="title"/>
-        <button style="display: inline-block" class="btn btn-secondary" type="submit">검색</button>
+    <div style="text-align: center;" class="py-1">
+        <form style="display: inline-block">
+            <input type="text" id="title" name="title"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">제목 검색</button>
+        </form>
         <button style="display: inline-block" class="btn btn-secondary" onclick="location.href='/board'">글 작성</button>
     </div>
+    <div style="text-align: center;">
+        <form>
+            <input type="text" id="keyword" name="keyword"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">키워드 검색</button>
+        </form>
+    </div>
+    <div style="text-align: center;" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div style="display: inline-block" class="btn-group me-2" role="group" aria-label="First group">
+            <button th:if="${mainDtos.pageable.pageNumber} >= 0" type="button" class="btn btn-secondary" th:onclick="|javascript:prevPage(${mainDtos.pageable.pageNumber})|">&#60;</button>
+            <button th:if="${mainDtos.pageable.pageNumber} == 0" class="btn btn-secondary" disabled>&#60;</button>
+            <button class="btn btn-secondary" th:text="${mainDtos.pageable.pageNumber} + 1"></button>
+            <button th:if="${mainDtos.pageable.pageNumber} + 1 < ${mainDtos.totalPages}" type="button" class="btn btn-secondary" th:onclick="|javascript:nextPage(${mainDtos.pageable.pageNumber})|">&#62;</button>
+            <button th:if="${mainDtos.pageable.pageNumber}+ 1 == ${mainDtos.totalPages}" class="btn btn-secondary" disabled>&#62;</button>
+        </div>
+        <form style="display: inline-block">
+            <input type="text" id="page" name="page" size="5"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">이동</button>
+        </form>
+    </div>
 </div>
+<script type="text/javascript">
+    function prevPage(page) {
+        location.href='?page=' + (page - 1);
+    }
+
+    function nextPage(page) {
+        location.href='?page=' + (page + 1);
+    }
+</script>
 </body>
 </html>

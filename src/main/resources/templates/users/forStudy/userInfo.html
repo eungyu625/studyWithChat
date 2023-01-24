@@ -19,9 +19,9 @@
     </div>
     <div class="py-3" style="text-align: center">
         <form th:if="!${isMember}">
-            <input type="submit" name="선발" value="선발" class="w-100 btn btn-outline-success">
+            <input type="submit" name="선발" value="선발" class="btn btn-outline-success">
         </form>
-        <div th:if="${isMember}" class="w-100 btn btn-success">선발완료</div>
+        <div th:if="${isMember}" class="btn btn-success">선발완료</div>
     </div>
 </div>
 </body>

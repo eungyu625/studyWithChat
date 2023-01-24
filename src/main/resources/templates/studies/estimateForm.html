@@ -9,21 +9,15 @@
         </div>
         <form>
             <select class="form-select" name="평점">
-                <option selected>평점</option>
-                <option value="1">1점</option>
+                <option value="1" selected>1점</option>
                 <option value="2">2점</option>
                 <option value="3">3점</option>
                 <option value="4">4점</option>
                 <option value="5">5점</option>
             </select>
-            <input type="submit" style="cursor: pointer;" value="평가" class="w-100 btn btn-outline-success" th:onclick="|javascript:finish()|">
+            <input type="submit" style="cursor: pointer;" value="평가" class="w-100 btn btn-outline-success">
         </form>
     </div>
 </div>
-<script type="text/javascript">
-    function finish() {
-        window.open('about:blank', '_self').close();
-    }
-</script>
 </body>
 </html>

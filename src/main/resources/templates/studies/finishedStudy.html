@@ -22,12 +22,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${studyDto.notEstimatedMembers}">
+            <tr th:each="user : ${studyDto.notEstimatedMembers}" th:if="${user.email} != ${myDto.email}">
                 <td th:text="${user.email}" style="cursor: pointer;" th:onclick="|javascript:userInformation(${user.id})|"></td>
                 <td class="btn btn-outline-warning" th:onclick="|javascript:estimate(${studyDto.id}, ${user.id})|">평가하기</td>
             </tr>
-            <tr th:each="user : ${studyDto.estimatedMembers}">
-                <td th:text="${user.email}" th:onclick="|javascript:userInformation(${user.id})|"></td>
+            <tr th:each="user : ${studyDto.estimatedMembers}" th:if="${user.email} != ${myDto.email}">
+                <td th:text="${user.email}" style="cursor: pointer;" th:onclick="|javascript:userInformation(${user.id})|"></td>
                 <td class="btn btn-warning">평가완료</td>
             </tr>
             </tbody>
