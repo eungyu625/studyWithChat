@@ -63,6 +63,7 @@ public class User {
     public void end_study() {
         studies_ing -= 1;
         studies_ended += 1;
+
     }
 
     public void estimated(Double new_grade) {
