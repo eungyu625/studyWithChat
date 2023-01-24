@@ -36,6 +36,8 @@ public class User {
 
     private Double grade = 0.;
 
+    private Integer estimatedNUmber = 0;
+
     private Integer studies_ended = 0;
 
     private Integer studies_ing = 0;
@@ -59,7 +61,14 @@ public class User {
     }
 
     public void end_study() {
+        studies_ing -= 1;
         studies_ended += 1;
+    }
+
+    public void estimated(Double new_grade) {
+        double sum = grade * estimatedNUmber + new_grade;
+        estimatedNUmber += 1;
+        grade = sum / estimatedNUmber;
     }
 
     public String getRoleKey() {
