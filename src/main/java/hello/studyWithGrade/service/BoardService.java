@@ -6,11 +6,14 @@ import hello.studyWithGrade.entity.user.User;
 import hello.studyWithGrade.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,9 +45,14 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
-    public Page<Board> findByTitleLike(String title, Pageable pageable) {
+    public Page<Board> findByTitleContaining(String title, Pageable pageable) {
 
-        return boardRepository.findByTitleLike(title, pageable);
+        return boardRepository.findByTitleContaining(title, pageable);
+    }
+
+    public Page<Board> findByKeyword(String keyword, Pageable pageable) {
+        List<Board> boards = boardRepository.findAll().stream().filter(board -> board.getKeyword().contains(keyword)).collect(Collectors.toList());
+        return new PageImpl<>(boards, pageable, boards.size());
     }
 
     public Page<Board> findByUser(User user, Pageable pageable) {
