@@ -3,6 +3,7 @@ package hello.studyWithGrade.dto;
 import hello.studyWithGrade.entity.Board;
 import hello.studyWithGrade.entity.Comment;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,21 +19,20 @@ public class BoardDto {
     private boolean progress;
     private String writeTime;
     private UserDto userDto;
-    private List<CommentDto> commentDtos;
+    private Page<CommentDto> commentDtos;
     private Integer commentNumbers;
 
     protected BoardDto() {
 
     }
 
-    public BoardDto(Board board, List<Comment> comments) {
+    public BoardDto(Board board, Page<Comment> comments, int commentNumbers) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.progress = board.isProgress();
         this.writeTime = DateTimeFormatter.ofPattern("MM-dd HH:mm").format(board.getWriteTime());
         this.userDto = new UserDto(board.getUser());
-        this.commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
-        this.commentNumbers = commentDtos.size();
+        this.commentNumbers = commentNumbers;
     }
 }
