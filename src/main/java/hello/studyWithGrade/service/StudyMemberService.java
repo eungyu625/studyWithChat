@@ -44,9 +44,9 @@ public class StudyMemberService {
     /*
      * 스터디원 평가 완료 시 estimatedMember에 추가
      */
-    public void estimated(StudyMember studyMember, User user) {
-        studyMember.estimated(user);
-        studyMemberRepository.save(studyMember);
+    public void estimated(StudyMember user, User estimatedMember) {
+        user.estimated(estimatedMember);
+        studyMemberRepository.save(user);
     }
 
     public List<StudyMember> findByUser(User user) {
