@@ -3,6 +3,7 @@ package hello.studyWithGrade.controller;
 import hello.studyWithGrade.config.auth.LoginUser;
 import hello.studyWithGrade.config.auth.dto.SessionUser;
 import hello.studyWithGrade.dto.StudyDto;
+import hello.studyWithGrade.dto.StudyMemberDto;
 import hello.studyWithGrade.dto.UserDto;
 import hello.studyWithGrade.dto.myinfo.MyDto;
 import hello.studyWithGrade.entity.Study;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,6 @@ public class StudyController {
 
     private final UserService userService;
     private final BoardService boardService;
-    private final CommentService commentService;
     private final StudyService studyService;
     private final StudyMemberService studyMemberService;
 
@@ -86,6 +87,9 @@ public class StudyController {
             return "studies/study";
         }
 
+        model.addAttribute("myDto", new MyDto(user.getId(), user.getEmail()));
+
+
         return "studies/finishedStudy";
     }
 
@@ -94,6 +98,7 @@ public class StudyController {
                                      @RequestParam(value = "진행완료", required = false) String end) {
 
         if (StringUtils.hasText(end)) {
+            userService.finish_study(userService.findByEmail(sessionUser.getEmail()));
             studyService.finish(studyService.findById(myStudyId));
         }
 
@@ -114,21 +119,53 @@ public class StudyController {
 
         model.addAttribute("studyDto", new StudyDto(study, notEstimatedMembers, estimatedMembers));
 
+        if (!study.isStart()) {
+            return "studies/preparingStudy";
+        }
+
         if (!study.isProgress()) {
             return "studies/myStudy";
         }
+
+        model.addAttribute("myDto", new MyDto(user.getId(), user.getEmail()));
 
         return "studies/finishedStudy";
     }
 
     @GetMapping("/estimate/{studyId}/{studyMemberId}")
     public String estimateStudyMember(@PathVariable("studyId") Long studyId, @LoginUser SessionUser sessionUser,
-                                      @PathVariable("studyMemberId") Long studyMemberId, @RequestParam(value = "평점", required = false) String grade) {
+                                      @PathVariable("studyMemberId") Long studyMemberId, @RequestParam(value = "평점", required = false) String grade,
+                                      Model model) {
 
-        if (StringUtils.hasText(grade)) {
-            System.out.println(grade);
+        if (studyMemberService.findByUserAndStudy(userService.findByEmail(sessionUser.getEmail()), studyService.findById(studyId)).getEstimatedMembers().contains(studyMemberId)) {
+            return "studies/estimated";
         }
 
+        if (StringUtils.hasText(grade)) {
+            double new_grade = calculate(grade);
+            User user = userService.findByEmail(sessionUser.getEmail()); // 평가한 사람(현재 사용자)
+            Study study = studyService.findById(studyId);
+
+            User studyMember = userService.findById(studyMemberId); // 평가받는 사람
+            userService.estimate(studyMember, new_grade); // 평가받는 사람 점수 저장
+            studyMemberService.estimated(studyMemberService.findByUserAndStudy(user, study), studyMember);
+
+            return "studies/estimated";
+        }
+
+        User member = userService.findById(studyMemberId);
+        model.addAttribute("userDto", new StudyMemberDto(member.getId(), member.getEmail()));
+
         return "studies/estimateForm";
+    }
+
+    private double calculate(String grade) {
+        double new_grade = 0.;
+
+        for (int i = 0; i < grade.length(); i++) {
+            new_grade += (double) grade.charAt(i) - 48;
+        }
+
+        return new_grade;
     }
 }
