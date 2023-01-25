@@ -28,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public String write(@Validated @ModelAttribute BoardForm boardForm, BindingResult result, @LoginUser SessionUser sessionUser) {
+    public String write(@Validated @ModelAttribute BoardForm boardForm, BindingResult result, @LoginUser SessionUser sessionUser, Model model) {
 
         if (!StringUtils.hasText(boardForm.getTitle())) {
             result.rejectValue("title", "required", null, null);
@@ -67,11 +68,19 @@ public class BoardController {
             result.rejectValue("studyName", "required", null, null);
         }
 
+        User user = userService.findByEmail(sessionUser.getEmail());
+
+        if (user.getRecentBoardWriteTime() != null && user.getRecentBoardWriteTime().getSecond() + 600 > LocalDateTime.now().getSecond()) {
+            model.addAttribute("timeout", false);
+            return "boards/boardForm";
+        }
+
+        model.addAttribute("timeout", true);
+
         if (result.hasErrors()) {
             return "boards/boardForm";
         }
 
-        User user = userService.findByEmail(sessionUser.getEmail());
         Board board = new Board();
         Study study = new Study();
         study.create(boardForm.getStudyName(), user);
@@ -82,6 +91,7 @@ public class BoardController {
         }
         board.create(boardForm.getTitle(), boardForm.getContent(), user, keywords, study);
         boardService.write(board);
+        userService.updateWriteTime(user);
 
         return "redirect:/";
     }
