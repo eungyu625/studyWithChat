@@ -65,5 +65,11 @@
         </div>
     </form>
 </div>
+<script th:inline="javascript">
+    const message = [[${timeout}]];
+    if (message == false) {
+        alert('아직 게시글을 올릴 수 없습니다.');
+    }
+</script>
 </body>
 </html>

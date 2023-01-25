@@ -24,10 +24,30 @@
             </tbody>
         </table>
     </div>
+    <div style="text-align: center;" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div style="display: inline-block" class="btn-group me-2" role="group" aria-label="First group">
+            <button th:if="${myCommentDtos.pageable.pageNumber} > 0" type="button" class="btn btn-secondary" th:onclick="|javascript:prevPage(${myCommentDtos.pageable.pageNumber})|">&#60;</button>
+            <button th:if="${myCommentDtos.pageable.pageNumber} == 0" class="btn btn-secondary" disabled>&#60;</button>
+            <button class="btn btn-secondary" th:text="${myCommentDtos.pageable.pageNumber} + 1"></button>
+            <button th:if="${myCommentDtos.pageable.pageNumber} + 1 < ${myCommentDtos.totalPages}" type="button" class="btn btn-secondary" th:onclick="|javascript:nextPage(${myCommentDtos.pageable.pageNumber})|">&#62;</button>
+            <button th:if="${myCommentDtos.totalPages} == 0 or ${myCommentDtos.pageable.pageNumber} + 1 >= ${myCommentDtos.totalPages}" class="btn btn-secondary" disabled>&#62;</button>
+        </div>
+        <form style="display: inline-block">
+            <input type="text" id="page" name="page" size="5"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">이동</button>
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     function findBoard(id) {
         location.href='/board/' + id;
+    }
+    function prevPage(page) {
+        location.href='?page=' + page;
+    }
+
+    function nextPage(page) {
+        location.href='?page=' + (page + 2);
     }
 </script>
 </body>

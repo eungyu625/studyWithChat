@@ -34,6 +34,11 @@
         <div class="pt-3">
             <div class="form-control textForm" th:text="*{content}"></div>
         </div>
+        <div style="text-align: left;" class="pt-3">
+            <div style="display: inline-block;" th:each="item : *{keyword}">
+                <span class="btn btn-outline-primary" style="display: inline-block;" th:text="${item}"></span>
+            </div>
+        </div>
     </div>
     <div style="text-align: center">
         <div th:if="${boardDto.userDto?.id} == ${userDto.id} and !${boardDto.progress}" style="display: inline-block" class="pt-2">
@@ -83,6 +88,19 @@
             </div>
         </div>
     </form>
+    <div style="text-align: center;" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div style="display: inline-block" class="btn-group me-2" role="group" aria-label="First group">
+            <button th:if="${boardDto.commentDtos.pageable.pageNumber} > 0" type="button" class="btn btn-secondary" th:onclick="|javascript:prevPage(${boardDto.commentDtos.pageable.pageNumber})|">&#60;</button>
+            <button th:if="${boardDto.commentDtos.pageable.pageNumber} == 0" class="btn btn-secondary" disabled>&#60;</button>
+            <button class="btn btn-secondary" th:text="${boardDto.commentDtos.pageable.pageNumber} + 1"></button>
+            <button th:if="${boardDto.commentDtos.pageable.pageNumber} + 1 < ${boardDto.commentDtos.totalPages}" type="button" class="btn btn-secondary" th:onclick="|javascript:nextPage(${boardDto.commentDtos.pageable.pageNumber})|">&#62;</button>
+            <button th:if="${boardDto.commentDtos.totalPages} == 0 or ${boardDto.commentDtos.pageable.pageNumber} + 1 >= ${boardDto.commentDtos.totalPages}" class="btn btn-secondary" disabled>&#62;</button>
+        </div>
+        <form style="display: inline-block">
+            <input type="text" id="page" name="page" size="5"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">이동</button>
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     function forStudyInformation(writerId, boardId, userId, myId) {
@@ -95,6 +113,14 @@
 
     function userInformation(commenterId) {
         window.open('/userInfo/' + commenterId, 'USER INFORMATION', 'scrollbars=no, width=500, height=300, status=no, resizable=no');
+    }
+
+    function prevPage(page) {
+        location.href='?page=' + page;
+    }
+
+    function nextPage(page) {
+        location.href='?page=' + (page + 2);
     }
 </script>
 </body>

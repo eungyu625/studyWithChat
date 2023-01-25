@@ -32,6 +32,28 @@
             </tbody>
         </table>
     </div>
+    <div style="text-align: center;" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div style="display: inline-block" class="btn-group me-2" role="group" aria-label="First group">
+            <button th:if="${myBoardDtos.pageable.pageNumber} > 0" type="button" class="btn btn-secondary" th:onclick="|javascript:prevPage(${myBoardDtos.pageable.pageNumber})|">&#60;</button>
+            <button th:if="${myBoardDtos.pageable.pageNumber} == 0" class="btn btn-secondary" disabled>&#60;</button>
+            <button class="btn btn-secondary" th:text="${myBoardDtos.pageable.pageNumber} + 1"></button>
+            <button th:if="${myBoardDtos.pageable.pageNumber} + 1 < ${myBoardDtos.totalPages}" type="button" class="btn btn-secondary" th:onclick="|javascript:nextPage(${myBoardDtos.pageable.pageNumber})|">&#62;</button>
+            <button th:if="${myBoardDtos.totalPages} == 0 or ${myBoardDtos.pageable.pageNumber} + 1 >= ${myBoardDtos.totalPages}" class="btn btn-secondary" disabled>&#62;</button>
+        </div>
+        <form style="display: inline-block">
+            <input type="text" id="page" name="page" size="5"/>
+            <button style="display: inline-block" class="btn btn-secondary" type="submit">이동</button>
+        </form>
+    </div>
 </div>
+<script type="text/javascript">
+    function prevPage(page) {
+        location.href='?page=' + page;
+    }
+
+    function nextPage(page) {
+        location.href='?page=' + (page + 2);
+    }
+</script>
 </body>
 </html>
