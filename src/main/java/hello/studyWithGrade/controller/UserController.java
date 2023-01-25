@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/myInfo/board")
-    public String myBoardInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String myBoardInformation(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                      @LoginUser SessionUser sessionUser, Model model) {
         Page<Board> boardPage = boardService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
         Page<MyBoardDto> myBoardDtos = boardPage.map(board -> new MyBoardDto(board, commentService.findByBoard(board).size()));
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/myInfo/comment")
-    public String myCommentInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String myCommentInformation(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                        @LoginUser SessionUser sessionUser, Model model) {
 
         Page<Comment> commentPage = commentService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @GetMapping("/myInfo/study")
-    public String myStudyInformation(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String myStudyInformation(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                      @LoginUser SessionUser sessionUser, Model model) {
 
         Page<StudyMember> studyMembers = studyMemberService.findByUser(userService.findByEmail(sessionUser.getEmail()), pageable);
