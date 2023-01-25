@@ -18,6 +18,7 @@ public class BoardDto {
     private String content;
     private boolean progress;
     private String writeTime;
+    private List<String> keyword;
     private UserDto userDto;
     private Page<CommentDto> commentDtos;
     private Integer commentNumbers;
@@ -32,7 +33,9 @@ public class BoardDto {
         this.content = board.getContent();
         this.progress = board.isProgress();
         this.writeTime = DateTimeFormatter.ofPattern("MM-dd HH:mm").format(board.getWriteTime());
+        this.keyword = board.getKeyword();
         this.userDto = new UserDto(board.getUser());
+        this.commentDtos = comments.map(CommentDto::new);
         this.commentNumbers = commentNumbers;
     }
 }
